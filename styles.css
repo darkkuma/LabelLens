@@ -145,6 +145,22 @@ button {
   color: var(--leaf-dark);
 }
 
+.search-status {
+  min-height: 18px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.search-status.live {
+  color: var(--leaf-dark);
+}
+
+.search-status.fallback {
+  color: #8a5a16;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);

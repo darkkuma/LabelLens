@@ -1,2 +1,5 @@
 .DS_Store
 *.log
+.env.local
+.env*.swp
+dist/
