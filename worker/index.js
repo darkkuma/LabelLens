@@ -113,7 +113,10 @@ export default {
       const upstreamUrl = `${FOODSAFETY_ENDPOINT}/${encodeURIComponent(env.FOODSAFETY_KOREA_API_KEY)}/C002/json/1/100/${filterName}=${encodeURIComponent(filterValue)}`;
 
       try {
-        const upstream = await fetch(upstreamUrl, { headers: { Accept: "application/json" } });
+        const upstream = await fetch(upstreamUrl, {
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(8000),
+        });
         const payload = await upstream.json();
         const service = payload?.C002 || {};
         const resultCode = cleanText(service?.RESULT?.CODE);
