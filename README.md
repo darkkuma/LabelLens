@@ -5,6 +5,10 @@ LabelLens is a Korea-first packaged food intelligence prototype for OpenAI Build
 It helps consumers decode Korean packaged food labels by combining product search,
 category-relative scoring, additive explanations, origin transparency, and label text parsing.
 
+## Live Demo
+
+Try LabelLens at [darkkuma.github.io/LabelLens](https://darkkuma.github.io/LabelLens/).
+
 ## Demo Flow
 
 1. Search `비비고 사찰만두`.
