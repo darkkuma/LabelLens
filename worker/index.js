@@ -1,4 +1,4 @@
-const MFDS_ENDPOINT = "https://data.mfds.go.kr/openapi/FoodNtrCpntDbInfo/getFoodNtrCpntDbInq";
+const MFDS_ENDPOINT = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo02/getFoodNtrCpntDbInq02";
 const ALLOWED_ORIGINS = new Set(["https://darkkuma.github.io"]);
 
 function corsHeaders(request) {
@@ -31,7 +31,7 @@ function normalizeItem(item) {
     name: item.FOOD_NM_KR || "",
     maker: item.MAKER_NM || "",
     category: item.FOOD_CAT4_NM || item.FOOD_CAT3_NM || item.FOOD_CAT2_NM || item.FOOD_CAT1_NM || "",
-    origin: item.ORIGIN_NM || item.FOOD_OR_NM || "",
+    origin: item.NATION_NM || item.ORIGIN_NM || "",
     servingSize: item.SERVING_SIZE || "",
     calories: item.AMT_NUM1 || "",
     protein: item.AMT_NUM3 || "",
@@ -41,7 +41,7 @@ function normalizeItem(item) {
     sodium: item.AMT_NUM13 || "",
     saturatedFat: item.AMT_NUM24 || "",
     reportNumber: item.ITEM_REPORT_NO || "",
-    imported: item.IMPORT_YN || "",
+    imported: item.IMP_YN || item.IMPORT_YN || "",
     updatedAt: item.UPDATE_DATE || item.RESEARCH_YMD || "",
   };
 }
@@ -88,7 +88,8 @@ export default {
         );
       }
 
-      const items = asArray(payload?.body?.items?.item).map(normalizeItem).filter((item) => item.name);
+      const rawItems = Array.isArray(payload?.body?.items) ? payload.body.items : payload?.body?.items?.item;
+      const items = asArray(rawItems).map(normalizeItem).filter((item) => item.name);
       return jsonResponse(request, { items, totalCount: Number(payload?.body?.totalCount || items.length) });
     } catch (error) {
       return jsonResponse(request, { error: "MFDS service is temporarily unavailable." }, 502);
