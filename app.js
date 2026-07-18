@@ -10,6 +10,24 @@ const additives = {
     evidence: "Moderate",
     attention: "medium",
   },
+  "L-글루탐산나트륨": {
+    name: "L-글루탐산나트륨",
+    english: "Monosodium glutamate (MSG)",
+    purpose: "Enhances savory or umami taste in soups, sauces, snacks, and prepared foods.",
+    indication:
+      "Regulators permit MSG for food use. LabelLens treats it as an exposure and preference signal, not automatic evidence that a food is unsafe.",
+    evidence: "Strong",
+    attention: "medium",
+  },
+  "5'-리보뉴클레오티드이나트륨": {
+    name: "5'-리보뉴클레오티드이나트륨",
+    english: "Disodium ribonucleotides",
+    purpose: "Strengthens savory flavor, often alongside glutamate-based flavor enhancers.",
+    indication:
+      "Generally used in small permitted amounts. Overall sodium and dietary pattern matter more than the ingredient name alone.",
+    evidence: "Moderate",
+    attention: "medium",
+  },
   "산도조절제": {
     name: "산도조절제",
     english: "Acidity regulator",
@@ -290,6 +308,7 @@ function normalizeApiProduct(item, index) {
     additives: [],
     provisional: true,
     servingSize: item.servingSize || "Not listed",
+    reportNumber: item.reportNumber || "",
     notes: [
       `Nutrition values use the MFDS record basis: ${item.servingSize || "basis not listed"}.`,
       "This provisional score uses verified nutrition fields; additive, processing, and personal-fit sections remain neutral until ingredient data is connected.",
@@ -308,6 +327,62 @@ async function fetchPublicProducts(query) {
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(payload.error || "Public data lookup failed");
   return (payload.items || []).map(normalizeApiProduct);
+}
+
+function normalizedProductName(value) {
+  return String(value || "").replace(/\s+/g, "").toLowerCase();
+}
+
+function splitIngredientText(value) {
+  return String(value || "")
+    .split(/,(?![^()]*\))/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+async function fetchIngredientRecord(product) {
+  if (!API_BASE_URL) return null;
+  const params = new URLSearchParams({ q: product.name });
+  if (product.reportNumber) params.set("reportNumber", product.reportNumber);
+  const response = await fetch(`${API_BASE_URL}/api/ingredients?${params}`);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || "Ingredient lookup failed");
+  const records = payload.items || [];
+  const target = normalizedProductName(product.name);
+  return records.find((item) => normalizedProductName(item.name) === target) || records[0] || null;
+}
+
+async function hydrateIngredients(product) {
+  if (!product || product.ingredientsStatus === "loading" || product.ingredientsStatus === "loaded") return;
+  product.ingredientsStatus = "loading";
+  if (selectedProduct.id === product.id) renderDetail(product);
+  try {
+    const record = await fetchIngredientRecord(product);
+    if (!record) {
+      product.ingredientsStatus = "missing";
+      if (selectedProduct.id === product.id) renderDetail(product);
+      return;
+    }
+    const ingredientText = record.ingredientText || (record.rawMaterials || []).join(", ");
+    product.ingredients = splitIngredientText(ingredientText);
+    product.additives = Object.keys(additives).filter((key) => ingredientText.includes(key));
+    product.ingredientsStatus = "loaded";
+    product.ingredientRecord = record;
+    product.subscores.additives = Math.max(8, 20 - product.additives.length * 2);
+    product.score = Object.values(product.subscores).reduce((sum, value) => sum + value, 0);
+    const source = `Live Food Safety Korea C002 ingredient record${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
+    if (!product.sources.includes(source)) product.sources.unshift(source);
+    if (!product.notes.some((note) => note.includes("C002"))) {
+      product.notes.push("Ingredient and additive signals were matched from the Food Safety Korea C002 manufacturing report.");
+    }
+    if (selectedProduct.id === product.id) {
+      renderResults(currentResults);
+      renderDetail(product);
+    }
+  } catch (error) {
+    product.ingredientsStatus = "error";
+    if (selectedProduct.id === product.id) renderDetail(product);
+  }
 }
 
 function setSearchStatus(message, state = "") {
@@ -437,10 +512,22 @@ function renderOverview(product) {
 }
 
 function renderIngredients(product) {
+  if (product.ingredientsStatus === "loading" && product.provisional) {
+    return `<div class="callout"><h3>Checking the manufacturing report...</h3><p>LabelLens is matching this product against the Food Safety Korea C002 ingredient records.</p></div>`;
+  }
+  if (product.ingredientsStatus === "error" && product.provisional) {
+    return `<div class="callout"><h3>Ingredient service unavailable</h3><p>The nutrition record remains available. LabelLens has not inferred any missing ingredients or additive findings.</p></div>`;
+  }
   if (product.provisional && !product.additives.length) {
-    return `<div class="callout"><h3>Ingredient data not yet connected</h3><p>The MFDS nutrition record verifies nutrient values but does not provide this product's full ingredient label. LabelLens leaves additive findings unknown instead of guessing.</p></div>`;
+    const message = product.ingredientsStatus === "loaded"
+      ? "The C002 record was found, but no terms in the current additive knowledge base were detected. This is not an additive-free claim."
+      : "The MFDS nutrition record verifies nutrient values, but no matching C002 ingredient record was found. LabelLens leaves additive findings unknown instead of guessing.";
+    return `<div class="callout"><h3>${product.ingredientsStatus === "loaded" ? "No recognized additive terms" : "Ingredient data unavailable"}</h3><p>${message}</p></div>`;
   }
   return `
+    ${product.ingredientsStatus === "loading" ? `<div class="callout" style="margin-bottom: 12px;"><p>Checking this demo profile against the live C002 manufacturing records...</p></div>` : ""}
+    ${product.ingredientsStatus === "error" ? `<div class="callout" style="margin-bottom: 12px;"><p>The live C002 service is unavailable, so the curated demo ingredient profile is shown.</p></div>` : ""}
+    ${product.ingredientsStatus === "loaded" ? `<div class="callout" style="margin-bottom: 12px;"><h3>C002 manufacturing report matched</h3><p>${product.ingredients.slice(0, 24).join(", ")}${product.ingredients.length > 24 ? "..." : ""}</p></div>` : ""}
     <div class="ingredient-list">
       ${product.additives
         .map((key) => {
@@ -580,6 +667,7 @@ async function runSearch(query) {
     selectedProduct = currentResults[0];
     renderResults(currentResults);
     renderDetail(selectedProduct);
+    hydrateIngredients(selectedProduct);
     setSearchStatus(
       liveResults.length ? `${liveResults.length} live MFDS record${liveResults.length === 1 ? "" : "s"} found` : "No live match · showing demo catalog",
       liveResults.length ? "live" : "fallback",
@@ -609,6 +697,7 @@ document.querySelector("#results-list").addEventListener("click", (event) => {
   activeTab = "overview";
   renderResults(currentResults);
   renderDetail(selectedProduct);
+  hydrateIngredients(selectedProduct);
 });
 
 document.querySelector("#product-detail").addEventListener("click", (event) => {
