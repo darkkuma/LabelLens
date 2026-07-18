@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LabelLens | Korea-first packaged food intelligence</title>
+    <meta
+      name="description"
+      content="Decode Korean packaged food labels, additives, origin transparency, and category rankings."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Korea-first food label intelligence</p>
+          <h1 id="page-title">Decode packaged foods before they reach your cart.</h1>
+          <p class="hero-text">
+            Search a product or paste a Korean label. LabelLens explains additives,
+            origin clarity, nutrition tradeoffs, and category rank in plain language.
+          </p>
+        </div>
+
+        <form class="search-panel" id="search-form">
+          <label for="search-input">Search product</label>
+          <div class="search-row">
+            <input
+              id="search-input"
+              name="search"
+              value="비비고 사찰만두"
+              autocomplete="off"
+              placeholder="비비고 사찰만두, 신라면, 만두..."
+            />
+            <button type="submit">Analyze</button>
+          </div>
+          <div class="quick-picks" aria-label="Example searches">
+            <button type="button" data-query="비비고 사찰만두">비비고 사찰만두</button>
+            <button type="button" data-query="냉동만두">Frozen dumplings</button>
+            <button type="button" data-query="라면">Instant ramen</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="workspace">
+        <aside class="results-panel" aria-labelledby="results-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Matched products</p>
+              <h2 id="results-title">Search results</h2>
+            </div>
+            <span id="result-count">0</span>
+          </div>
+          <div id="results-list" class="results-list"></div>
+        </aside>
+
+        <section class="detail-panel" aria-live="polite">
+          <div id="product-detail"></div>
+        </section>
+      </section>
+
+      <section class="label-tools" aria-labelledby="label-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Fallback when product data is missing</p>
+            <h2 id="label-title">Paste a Korean label</h2>
+          </div>
+        </div>
+        <div class="label-grid">
+          <textarea id="label-input" spellcheck="false">원재료명: 돼지고기(국산), 부추(중국산), 양배추(국산), 두부, 대두단백, 양조간장, 향미증진제, 산도조절제, 혼합제제, 참기름. 영양정보: 나트륨 760mg, 탄수화물 38g, 당류 5g, 지방 12g, 포화지방 4g, 단백질 13g.</textarea>
+          <div class="label-analysis" id="label-analysis"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
