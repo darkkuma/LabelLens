@@ -1,3 +1,5 @@
+const API_BASE_URL = globalThis.LABELLENS_API_BASE_URL || "";
+
 const additives = {
   "향미증진제": {
     name: "향미증진제",
@@ -213,6 +215,8 @@ const products = [
 const categories = [...new Set(products.map((product) => product.category))];
 let selectedProduct = products[0];
 let activeTab = "overview";
+let currentResults = products;
+let searchRequestId = 0;
 
 function productScoreClass(score) {
   if (score >= 80) return "green";
@@ -237,6 +241,81 @@ function searchProducts(query) {
   });
 }
 
+function numberValue(value) {
+  const parsed = Number.parseFloat(String(value ?? "").replace(/,/g, ""));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function nutritionSubscore(nutrition) {
+  let score = 22;
+  if (nutrition.sodium > 1500) score -= 8;
+  else if (nutrition.sodium > 900) score -= 5;
+  else if (nutrition.sodium > 600) score -= 3;
+  if (nutrition.sugar > 20) score -= 5;
+  else if (nutrition.sugar > 10) score -= 3;
+  if (nutrition.saturatedFat > 8) score -= 5;
+  else if (nutrition.saturatedFat > 5) score -= 3;
+  if (nutrition.protein > 15) score += 3;
+  else if (nutrition.protein > 8) score += 1;
+  return Math.max(4, Math.min(30, score));
+}
+
+function normalizeApiProduct(item, index) {
+  const nutrition = {
+    calories: numberValue(item.calories),
+    protein: numberValue(item.protein),
+    sugar: numberValue(item.sugar),
+    sodium: numberValue(item.sodium),
+    saturatedFat: numberValue(item.saturatedFat),
+  };
+  const nutritionScore = nutritionSubscore(nutrition);
+  const originKnown = Boolean(item.origin);
+  const score = nutritionScore + 10 + (originKnown ? 13 : 8) + 8 + 8;
+  const idBase = item.foodCode || item.reportNumber || `${item.name}-${index}`;
+
+  return {
+    id: `mfds-${String(idBase).replace(/[^a-zA-Z0-9가-힣_-]/g, "-")}`,
+    name: item.name || "Unnamed MFDS product",
+    brand: item.maker || "Manufacturer not listed",
+    category: item.category || "MFDS packaged food",
+    type: "Live MFDS nutrition record",
+    score,
+    rank: null,
+    rankTotal: null,
+    betterThan: null,
+    nutrition,
+    subscores: { nutrition: nutritionScore, additives: 10, origin: originKnown ? 13 : 8, processing: 8, fit: 8 },
+    origins: item.origin ? [{ ingredient: "Product record", origin: item.origin, weight: "recorded" }] : [],
+    ingredients: [],
+    additives: [],
+    provisional: true,
+    servingSize: item.servingSize || "Not listed",
+    notes: [
+      `Nutrition values use the MFDS record basis: ${item.servingSize || "basis not listed"}.`,
+      "This provisional score uses verified nutrition fields; additive, processing, and personal-fit sections remain neutral until ingredient data is connected.",
+    ],
+    sources: [
+      "Live MFDS Food Nutrition Component Database record",
+      item.reportNumber ? `Manufacturing report number: ${item.reportNumber}` : "Manufacturing report number not listed",
+      item.updatedAt ? `MFDS record updated: ${item.updatedAt}` : "MFDS update date not listed",
+    ],
+  };
+}
+
+async function fetchPublicProducts(query) {
+  if (!API_BASE_URL || query.trim().length < 2) return [];
+  const response = await fetch(`${API_BASE_URL}/api/nutrition?q=${encodeURIComponent(query.trim())}`);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || "Public data lookup failed");
+  return (payload.items || []).map(normalizeApiProduct);
+}
+
+function setSearchStatus(message, state = "") {
+  const status = document.querySelector("#search-status");
+  status.textContent = message;
+  status.className = `search-status ${state}`.trim();
+}
+
 function renderResults(results) {
   document.querySelector("#result-count").textContent = results.length;
   const list = document.querySelector("#results-list");
@@ -247,7 +326,7 @@ function renderResults(results) {
           <div class="result-top">
             <div>
               <h3>${product.name}</h3>
-              <p>${product.brand} · ${product.category}</p>
+              <p>${product.brand} · ${product.category}${product.provisional ? " · Live MFDS" : " · Demo profile"}</p>
             </div>
             <span class="score-pill">${product.score}</span>
           </div>
@@ -305,11 +384,11 @@ function renderDetail(product) {
         <div class="product-title">
           <p class="eyebrow">${product.brand} · ${product.category}</p>
           <h2>${product.name}</h2>
-          <p>${product.type}. Ranked #${product.rank} of ${product.rankTotal}, better than ${product.betterThan}% of ${product.category.toLowerCase()} in the current seed set.</p>
+          <p>${product.type}. ${product.provisional ? "Provisional score based on MFDS nutrition fields; missing ingredient dimensions are shown as neutral." : `Ranked #${product.rank} of ${product.rankTotal}, better than ${product.betterThan}% of ${product.category.toLowerCase()} in the current demo set.`}</p>
           <div class="badges">
             <span class="badge ${productScoreClass(product.score)}">${product.score >= 80 ? "Category leader" : product.score >= 68 ? "Clearer than average" : "Watch tradeoffs"}</span>
             <span class="badge blue">${origin.domestic}% domestic signal</span>
-            <span class="badge amber">${product.additives.length} additive flags</span>
+            <span class="badge amber">${product.provisional ? "Ingredients pending" : `${product.additives.length} additive flags`}</span>
           </div>
         </div>
       </header>
@@ -358,6 +437,9 @@ function renderOverview(product) {
 }
 
 function renderIngredients(product) {
+  if (product.provisional && !product.additives.length) {
+    return `<div class="callout"><h3>Ingredient data not yet connected</h3><p>The MFDS nutrition record verifies nutrient values but does not provide this product's full ingredient label. LabelLens leaves additive findings unknown instead of guessing.</p></div>`;
+  }
   return `
     <div class="ingredient-list">
       ${product.additives
@@ -390,6 +472,9 @@ function renderIngredients(product) {
 
 function renderOrigin(product) {
   const origin = originSummary(product);
+  if (product.provisional && !product.origins.length) {
+    return `<div class="callout"><h3>Origin not listed in this record</h3><p>No product-origin field was returned by the MFDS nutrition lookup. LabelLens marks it unknown rather than inferring origin from the manufacturer.</p></div>`;
+  }
   return `
     <div class="metric-grid">
       <div class="metric-card"><span>Domestic signal</span><strong>${origin.domestic}%</strong><p>Known Korean-origin ingredients among listed origin records.</p></div>
@@ -414,6 +499,9 @@ function renderOrigin(product) {
 }
 
 function renderRanking(product) {
+  if (product.provisional) {
+    return `<div class="callout"><h3>Ranking pending category coverage</h3><p>This is a live MFDS product record. A trustworthy category rank requires enough comparable live records with the same nutrition basis.</p></div>`;
+  }
   return `
     <div class="leaderboard">
       ${categoryRanking(product)
@@ -439,7 +527,7 @@ function renderSources(product) {
     <div class="source-list">
       <div class="callout">
         <h3>Evidence model</h3>
-        <p>Ingredient explanations are designed to cite WHO/JECFA, EFSA, FDA, Korean MFDS, and recent review literature. This MVP uses a curated local knowledge base until API keys and citation harvesting are connected.</p>
+        <p>Ingredient explanations are designed to cite WHO/JECFA, EFSA, FDA, Korean MFDS, and recent review literature. Live nutrition records come from MFDS; ingredient explanations currently use a curated local knowledge base.</p>
       </div>
       ${product.sources.map((source) => `<div class="callout"><p>${source}</p></div>`).join("")}
       <div class="callout">
@@ -467,12 +555,39 @@ function analyzeLabelText() {
   `;
 }
 
-function runSearch(query) {
-  const results = searchProducts(query);
-  selectedProduct = results[0] || products[0];
+async function runSearch(query) {
+  const requestId = ++searchRequestId;
+  const localResults = searchProducts(query);
+  currentResults = localResults.length ? localResults : products;
+  selectedProduct = currentResults[0];
   activeTab = "overview";
-  renderResults(results.length ? results : products);
+  renderResults(currentResults);
   renderDetail(selectedProduct);
+  setSearchStatus(API_BASE_URL ? "Checking live MFDS nutrition records..." : "Demo catalog · live connector not configured");
+
+  try {
+    const liveResults = await fetchPublicProducts(query);
+    if (requestId !== searchRequestId) return;
+    liveResults.forEach((product) => {
+      const existingIndex = products.findIndex((candidate) => candidate.id === product.id);
+      if (existingIndex >= 0) products[existingIndex] = product;
+      else products.push(product);
+    });
+    currentResults = [...liveResults, ...localResults].filter(
+      (product, index, list) => list.findIndex((candidate) => candidate.id === product.id) === index,
+    );
+    if (!currentResults.length) currentResults = products;
+    selectedProduct = currentResults[0];
+    renderResults(currentResults);
+    renderDetail(selectedProduct);
+    setSearchStatus(
+      liveResults.length ? `${liveResults.length} live MFDS record${liveResults.length === 1 ? "" : "s"} found` : "No live match · showing demo catalog",
+      liveResults.length ? "live" : "fallback",
+    );
+  } catch (error) {
+    if (requestId !== searchRequestId) return;
+    setSearchStatus("Public API unavailable · showing demo catalog", "fallback");
+  }
 }
 
 document.querySelector("#search-form").addEventListener("submit", (event) => {
@@ -490,9 +605,9 @@ document.querySelector(".quick-picks").addEventListener("click", (event) => {
 document.querySelector("#results-list").addEventListener("click", (event) => {
   const card = event.target.closest(".result-card");
   if (!card) return;
-  selectedProduct = products.find((product) => product.id === card.dataset.id) || selectedProduct;
+  selectedProduct = currentResults.find((product) => product.id === card.dataset.id) || selectedProduct;
   activeTab = "overview";
-  renderResults(searchProducts(document.querySelector("#search-input").value));
+  renderResults(currentResults);
   renderDetail(selectedProduct);
 });
 

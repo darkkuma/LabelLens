@@ -1,0 +1,9 @@
+{
+  "name": "labellens",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node --check app.js && node --check worker/index.js"
+  }
+}
