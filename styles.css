@@ -61,6 +61,10 @@ main, footer { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
 .quick-picks { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; }
 .quick-picks span { margin-right: 2px; color: var(--muted); font-size: 12px; font-weight: 800; }
 .quick-picks button { padding: 5px 8px; border-radius: 4px; background: #eef1ef; color: #44504a; font-size: 12px; }
+.category-picks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.category-picks button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 9px; border: 1px solid var(--line); border-radius: 4px; background: white; color: var(--ink); font-size: 12px; font-weight: 800; }
+.category-picks button:hover { border-color: var(--green); color: var(--green); }
+.category-picks span { display: grid; place-items: center; min-width: 18px; height: 18px; border-radius: 50%; background: #edf1ee; color: var(--muted); font-size: 10px; }
 .search-status { min-height: 18px; margin: 10px 0 0; color: var(--muted); font-size: 12px; font-weight: 700; }
 .search-status.live { color: var(--green); }
 .search-status.fallback { color: #8a5a16; }
@@ -87,6 +91,7 @@ main, footer { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
 .result-card h3 { margin: 0; font-size: 15px; }
 .result-card p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
 .score-pill { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: white; color: var(--green-dark); font-size: 17px; font-weight: 900; }
+.score-pill.pending { color: #8a938f; }
 
 .product-header { display: grid; grid-template-columns: 144px minmax(0, 1fr); gap: 26px; align-items: center; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
 .score-dial { --score: 78; position: relative; display: grid; place-items: center; width: 144px; aspect-ratio: 1; border-radius: 50%; background: conic-gradient(var(--green) calc(var(--score) * 1%), #e5e9e7 0); }
@@ -135,6 +140,15 @@ main, footer { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
 .ingredient-summary { margin-bottom: 12px; padding: 14px 16px; background: #f5f7f5; }
 .ingredient-summary strong { display: block; margin-bottom: 4px; font-size: 13px; }
 .ingredient-summary p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.product-monogram { display: grid; place-items: center; width: 112px; aspect-ratio: 1; background: var(--green-soft); color: var(--green); font-size: 34px; font-weight: 900; }
+.catalog-header { grid-template-columns: 112px minmax(0, 1fr); }
+.catalog-grid { display: grid; grid-template-columns: 1.2fr 1fr .7fr; margin-top: 22px; border: 1px solid var(--line); }
+.catalog-grid section { min-width: 0; padding: 18px; border-right: 1px solid var(--line); }
+.catalog-grid section:last-child { border-right: 0; }
+.catalog-grid section > span { display: block; margin-bottom: 8px; color: var(--muted); font-size: 11px; font-weight: 800; }
+.catalog-grid section > strong { display: block; margin-bottom: 7px; font-size: 16px; }
+.retailer-links { display: flex; flex-wrap: wrap; gap: 7px; }
+.retailer-links a, .text-link { color: var(--green); font-size: 13px; font-weight: 800; text-underline-offset: 3px; }
 
 .label-tools { margin-top: 16px; padding: 28px; }
 .label-heading { margin-bottom: 20px; }
@@ -176,10 +190,15 @@ footer p { margin: 0; }
   .result-card { flex: 0 0 250px; }
   .detail-panel, .label-tools { padding: 18px; }
   .product-header { grid-template-columns: 94px minmax(0, 1fr); gap: 16px; }
+  .product-header.catalog-header { grid-template-columns: 82px minmax(0, 1fr); }
+  .product-monogram { width: 82px; font-size: 28px; }
   .score-dial { width: 94px; }
   .score-dial strong { font-size: 30px; }
   .product-title h2 { font-size: 25px; }
   .summary-list { grid-template-columns: 1fr; }
+  .catalog-grid { grid-template-columns: 1fr; }
+  .catalog-grid section { border-right: 0; border-bottom: 1px solid var(--line); }
+  .catalog-grid section:last-child { border-bottom: 0; }
   .ingredient-card { grid-template-columns: 1fr; gap: 8px; }
   .attention { text-align: left; }
   .label-analysis { grid-template-columns: 1fr; }

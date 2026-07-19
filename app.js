@@ -220,6 +220,29 @@ const products = [
   },
 ];
 
+const retailerCatalog = globalThis.LABELLENS_CATALOG || [];
+const seededNames = new Set(products.map((product) => normalizedProductName(product.name)));
+
+retailerCatalog.forEach((item) => {
+  if (seededNames.has(normalizedProductName(item.name))) return;
+  products.push({
+    ...item,
+    id: `catalog-${item.id}`,
+    type: "판매처 인기 상품",
+    score: null,
+    rankTotal: null,
+    betterThan: null,
+    nutrition: { sodium: 0, sugar: 0, saturatedFat: 0, protein: 0, calories: 0 },
+    subscores: { nutrition: 0, additives: 0, origin: 0, processing: 0, fit: 0 },
+    origins: [],
+    ingredients: [],
+    additives: [],
+    notes: [],
+    sources: [],
+    catalogOnly: true,
+  });
+});
+
 const categories = [...new Set(products.map((product) => product.category))];
 let selectedProduct = products[0];
 let activeTab = "overview";
@@ -234,6 +257,7 @@ function productScoreClass(score) {
 }
 
 function preferenceScore(product) {
+  if (product.catalogOnly) return -1;
   if (currentPreference === "sodium") {
     const sodiumBoost = product.nutrition.sodium <= 700 ? 7 : product.nutrition.sodium >= 1400 ? -8 : 0;
     return Math.max(0, Math.min(100, product.score + sodiumBoost));
@@ -358,7 +382,7 @@ async function fetchIngredientRecord(product) {
 }
 
 async function hydrateIngredients(product) {
-  if (!product || product.ingredientsStatus === "loading" || product.ingredientsStatus === "loaded") return;
+  if (!product || product.catalogOnly || product.ingredientsStatus === "loading" || product.ingredientsStatus === "loaded") return;
   product.ingredientsStatus = "loading";
   if (selectedProduct.id === product.id) renderDetail(product);
   try {
@@ -403,9 +427,9 @@ function renderResults(results) {
           <div class="result-top">
             <div>
               <h3>${product.name}</h3>
-              <p>${product.brand} · ${product.category}${product.provisional ? " · 영양정보 확인" : ""}</p>
+              <p>${product.brand} · ${product.category}${product.catalogOnly ? ` · ${product.retailers.join("·")}` : product.provisional ? " · 영양정보 확인" : ""}</p>
             </div>
-            <span class="score-pill">${preferenceScore(product)}</span>
+            <span class="score-pill ${product.catalogOnly ? "pending" : ""}">${product.catalogOnly ? "--" : preferenceScore(product)}</span>
           </div>
         </button>
       `,
@@ -443,6 +467,10 @@ function categoryRanking(product) {
 }
 
 function renderDetail(product) {
+  if (product.catalogOnly) {
+    renderCatalogDetail(product);
+    return;
+  }
   const origin = originSummary(product);
   const shownScore = preferenceScore(product);
   const tabs = [
@@ -481,6 +509,57 @@ function renderDetail(product) {
       </div>
     </article>
   `;
+}
+
+function retailerUrl(product, retailer) {
+  if (retailer === "컬리" && product.retailerId) return `https://www.kurly.com/goods/${product.retailerId}`;
+  if (retailer === "쿠팡") return `https://www.coupang.com/np/search?q=${encodeURIComponent(product.name)}`;
+  return `https://www.ssg.com/search.ssg?target=all&query=${encodeURIComponent(product.name)}`;
+}
+
+function renderCatalogDetail(product) {
+  document.querySelector("#product-detail").innerHTML = `
+    <article>
+      <header class="product-header catalog-header">
+        <div class="product-monogram" aria-hidden="true">${product.category.slice(0, 1)}</div>
+        <div class="product-title">
+          <p class="section-kicker">${product.brand} · ${product.category}</p>
+          <h2>${product.name}</h2>
+          <div class="badges">
+            ${product.retailers.map((retailer) => `<span class="badge blue">${retailer}</span>`).join("")}
+            ${product.rank ? `<span class="badge green">검색 상위 ${product.rank}위</span>` : ""}
+          </div>
+        </div>
+      </header>
+      <div class="catalog-grid">
+        <section>
+          <span>판매처</span>
+          <div class="retailer-links">
+            ${product.retailers.map((retailer) => `<a href="${retailerUrl(product, retailer)}" target="_blank" rel="noopener">${retailer}에서 보기</a>`).join("")}
+          </div>
+        </section>
+        <section>
+          <span>제품 정보</span>
+          <strong>라벨 데이터 없음</strong>
+          <a class="text-link" href="#label-title">원재료명 직접 분석</a>
+        </section>
+        <section>
+          <span>확인일</span>
+          <strong>${product.observedAt.replaceAll("-", ".")}</strong>
+        </section>
+      </div>
+    </article>
+  `;
+}
+
+function renderCategoryPicks() {
+  const counts = retailerCatalog.reduce((result, item) => {
+    result[item.category] = (result[item.category] || 0) + 1;
+    return result;
+  }, {});
+  document.querySelector("#category-picks").innerHTML = Object.entries(counts)
+    .map(([category, count]) => `<button type="button" data-category="${category}">${category}<span>${count}</span></button>`)
+    .join("");
 }
 
 function renderTab(product) {
@@ -647,7 +726,7 @@ async function runSearch(query) {
       if (existingIndex >= 0) products[existingIndex] = product;
       else products.push(product);
     });
-    currentResults = [...liveResults, ...localResults].filter(
+    currentResults = [...localResults, ...liveResults].filter(
       (product, index, list) => list.findIndex((candidate) => candidate.id === product.id) === index,
     );
     if (!currentResults.length) currentResults = products;
@@ -675,6 +754,13 @@ document.querySelector(".quick-picks").addEventListener("click", (event) => {
   if (!button) return;
   document.querySelector("#search-input").value = button.dataset.query;
   runSearch(button.dataset.query);
+});
+
+document.querySelector("#category-picks").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-category]");
+  if (!button) return;
+  document.querySelector("#search-input").value = button.dataset.category;
+  runSearch(button.dataset.category);
 });
 
 document.querySelector("#preference-options").addEventListener("click", (event) => {
@@ -710,5 +796,6 @@ document.querySelector("#product-detail").addEventListener("click", (event) => {
 
 document.querySelector("#label-input").addEventListener("input", analyzeLabelText);
 
+renderCategoryPicks();
 runSearch("비비고 사찰만두");
 analyzeLabelText();
