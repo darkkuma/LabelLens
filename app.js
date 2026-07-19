@@ -83,165 +83,18 @@ const additives = {
   },
 };
 
-const products = [
-  {
-    id: "bibigo-sachal-mandu",
-    name: "비비고 사찰만두",
-    brand: "CJ 비비고",
-    category: "냉동만두",
-    type: "채소 중심 사찰식 만두",
-    score: 78,
-    rank: 4,
-    rankTotal: 37,
-    betterThan: 89,
-    nutrition: { sodium: 760, sugar: 5, saturatedFat: 4, protein: 13, calories: 360 },
-    subscores: { nutrition: 22, additives: 15, origin: 14, processing: 12, fit: 15 },
-    origins: [
-      { ingredient: "돼지고기", origin: "국산", weight: "주원료" },
-      { ingredient: "부추", origin: "중국산", weight: "주원료" },
-      { ingredient: "양배추", origin: "국산", weight: "주원료" },
-      { ingredient: "복합조미식품", origin: "미상", weight: "부원료" },
-    ],
-    ingredients: ["돼지고기", "부추", "양배추", "두부", "대두단백", "양조간장", "향미증진제", "산도조절제", "혼합제제", "참기름"],
-    additives: ["향미증진제", "산도조절제", "혼합제제"],
-    notes: [
-      "주원료는 비교적 명확하지만 복합조미식품의 세부 구성이 표시되지 않아 투명성이 낮아집니다.",
-      "나트륨은 냉동만두 평균 범위지만 한 끼 식사로 자주 먹기에는 주의가 필요합니다.",
-      "부추는 중국산으로 표시되어 있습니다.",
-    ],
-    sources: ["라벨렌즈 검증용 제품 프로필", "식약처 식품영양성분DB + 식품안전나라 C002 연동"],
-  },
-  {
-    id: "pulmuone-thin-skin-veggie",
-    name: "풀무원 얇은피 채소만두",
-    brand: "풀무원",
-    category: "냉동만두",
-    type: "얇은피 채소만두",
-    score: 84,
-    rank: 1,
-    rankTotal: 37,
-    betterThan: 98,
-    nutrition: { sodium: 610, sugar: 4, saturatedFat: 2, protein: 11, calories: 320 },
-    subscores: { nutrition: 25, additives: 17, origin: 16, processing: 12, fit: 14 },
-    origins: [
-      { ingredient: "양배추", origin: "국산", weight: "주원료" },
-      { ingredient: "두부", origin: "국산", weight: "주원료" },
-      { ingredient: "조미료", origin: "미상", weight: "부원료" },
-    ],
-    ingredients: ["양배추", "두부", "부추", "당면", "양조간장", "구연산"],
-    additives: ["구연산"],
-    notes: ["현재 비교군의 만두 제품보다 나트륨이 낮습니다.", "인식된 첨가물이 적고 주원료 원산지가 비교적 명확합니다."],
-    sources: ["라벨렌즈 검증용 제품 프로필"],
-  },
-  {
-    id: "market-veggie-mandu",
-    name: "마켓온 채식 교자",
-    brand: "마켓온",
-    category: "냉동만두",
-    type: "비건 교자",
-    score: 81,
-    rank: 2,
-    rankTotal: 37,
-    betterThan: 94,
-    nutrition: { sodium: 690, sugar: 6, saturatedFat: 2, protein: 10, calories: 340 },
-    subscores: { nutrition: 23, additives: 18, origin: 13, processing: 12, fit: 15 },
-    origins: [
-      { ingredient: "채소", origin: "혼합", weight: "주원료" },
-      { ingredient: "대두단백", origin: "수입산", weight: "주원료" },
-    ],
-    ingredients: ["양배추", "대두단백", "표고버섯", "당면", "잔탄검"],
-    additives: ["잔탄검"],
-    notes: ["첨가물 구성은 단순하지만 혼합·수입산 표기로 원산지 명확성이 낮습니다."],
-    sources: ["라벨렌즈 검증용 제품 프로필"],
-  },
-  {
-    id: "classic-pork-mandu",
-    name: "고향손 왕교자",
-    brand: "고향손",
-    category: "냉동만두",
-    type: "돼지고기 왕교자",
-    score: 72,
-    rank: 8,
-    rankTotal: 37,
-    betterThan: 78,
-    nutrition: { sodium: 840, sugar: 6, saturatedFat: 5, protein: 14, calories: 390 },
-    subscores: { nutrition: 19, additives: 14, origin: 12, processing: 12, fit: 15 },
-    origins: [
-      { ingredient: "돼지고기", origin: "수입산", weight: "주원료" },
-      { ingredient: "양배추", origin: "중국산", weight: "주원료" },
-      { ingredient: "조미료", origin: "미상", weight: "부원료" },
-    ],
-    ingredients: ["돼지고기", "양배추", "부추", "전분", "향미증진제", "산도조절제", "구연산"],
-    additives: ["향미증진제", "산도조절제", "구연산"],
-    notes: ["비교군 상위 제품보다 나트륨이 높고 원산지 명확성이 낮습니다."],
-    sources: ["라벨렌즈 검증용 제품 프로필"],
-  },
-  {
-    id: "shin-ramyun",
-    name: "신라면",
-    brand: "농심",
-    category: "라면",
-    type: "매운맛 유탕면",
-    score: 61,
-    rank: 12,
-    rankTotal: 42,
-    betterThan: 49,
-    nutrition: { sodium: 1790, sugar: 5, saturatedFat: 8, protein: 10, calories: 510 },
-    subscores: { nutrition: 12, additives: 13, origin: 13, processing: 9, fit: 14 },
-    origins: [
-      { ingredient: "소맥분", origin: "수입산", weight: "주원료" },
-      { ingredient: "분말스프", origin: "미상", weight: "주원료" },
-    ],
-    ingredients: ["소맥분", "팜유", "정제염", "향미증진제", "산도조절제", "구연산"],
-    additives: ["향미증진제", "산도조절제", "구연산"],
-    notes: ["나트륨이 점수를 가장 크게 낮춥니다. 섭취 빈도를 줄이거나 국물을 남기는 선택이 도움이 됩니다."],
-    sources: ["라벨렌즈 검증용 제품 프로필"],
-  },
-  {
-    id: "low-sodium-ramen",
-    name: "저나트륨 현미라면",
-    brand: "CleanBowl",
-    category: "라면",
-    type: "저나트륨 현미면",
-    score: 79,
-    rank: 2,
-    rankTotal: 42,
-    betterThan: 95,
-    nutrition: { sodium: 980, sugar: 3, saturatedFat: 3, protein: 12, calories: 430 },
-    subscores: { nutrition: 24, additives: 16, origin: 14, processing: 11, fit: 14 },
-    origins: [
-      { ingredient: "현미", origin: "국산", weight: "주원료" },
-      { ingredient: "밀", origin: "수입산", weight: "주원료" },
-    ],
-    ingredients: ["현미", "소맥분", "정제염", "잔탄검", "구연산"],
-    additives: ["잔탄검", "구연산"],
-    notes: ["현재 비교군의 일반 라면보다 나트륨이 크게 낮습니다."],
-    sources: ["라벨렌즈 검증용 제품 프로필"],
-  },
-];
 
-const retailerCatalog = globalThis.LABELLENS_CATALOG || [];
-const seededNames = new Set(products.map((product) => normalizedProductName(product.name)));
+const retailerCatalog = globalThis.LABELLENS_PRODUCTS || [];
+const products = retailerCatalog.map(buildVerifiedProduct);
 
-retailerCatalog.forEach((item) => {
-  if (seededNames.has(normalizedProductName(item.name))) return;
-  products.push({
-    ...item,
-    id: `catalog-${item.id}`,
-    type: "판매처 인기 상품",
-    score: null,
-    rankTotal: null,
-    betterThan: null,
-    nutrition: { sodium: 0, sugar: 0, saturatedFat: 0, protein: 0, calories: 0 },
-    subscores: { nutrition: 0, additives: 0, origin: 0, processing: 0, fit: 0 },
-    origins: [],
-    ingredients: [],
-    additives: [],
-    notes: [],
-    sources: [],
-    catalogOnly: true,
+for (const category of new Set(products.map((product) => product.category))) {
+  const ranked = products.filter((product) => product.category === category).sort((a, b) => b.score - a.score);
+  ranked.forEach((product, index) => {
+    product.rank = index + 1;
+    product.rankTotal = ranked.length;
+    product.betterThan = Math.round(((ranked.length - index - 1) / ranked.length) * 100);
   });
-});
+}
 
 const categories = [...new Set(products.map((product) => product.category))];
 let selectedProduct = products[0];
@@ -305,6 +158,37 @@ function nutritionSubscore(nutrition) {
   if (nutrition.protein > 15) score += 3;
   else if (nutrition.protein > 8) score += 1;
   return Math.max(4, Math.min(30, score));
+}
+
+function buildVerifiedProduct(record) {
+  const ingredients = splitIngredientText(record.ingredientText);
+  const recognizedAdditives = Object.keys(additives).filter((key) => record.ingredientText.includes(key));
+  const nutrition = { ...record.nutrition };
+  const subscores = {
+    nutrition: nutritionSubscore(nutrition),
+    additives: Math.max(7, 20 - recognizedAdditives.length * 2),
+    origin: Math.min(20, 8 + record.origins.length * 3),
+    processing: record.category === "두부·콩가공품" || record.category === "즉석밥" ? 14 : record.category === "라면" ? 8 : 10,
+    fit: 12,
+  };
+  const score = Object.values(subscores).reduce((sum, value) => sum + value, 0);
+  const hasChineseOrigin = record.origins.some((item) => item.origin.includes("중국산"));
+  const notes = [
+    `${record.servingSize} 기준 나트륨 ${nutrition.sodium}mg, 당류 ${nutrition.sugar}g, 포화지방 ${nutrition.saturatedFat}g입니다.`,
+    recognizedAdditives.length ? `표시 원재료에서 ${recognizedAdditives.join(", ")}을 확인했습니다.` : "등록된 주의 성분 사전과 일치하는 첨가물은 없습니다.",
+  ];
+  if (hasChineseOrigin) notes.push("중국산으로 표시된 원료가 있습니다.");
+
+  return {
+    ...record,
+    score,
+    nutrition,
+    subscores,
+    ingredients,
+    additives: recognizedAdditives,
+    notes,
+    ingredientsStatus: "loaded",
+  };
 }
 
 function normalizeApiProduct(item, index) {
@@ -494,6 +378,10 @@ function renderDetail(product) {
             <span class="badge ${productScoreClass(shownScore)}">${shownScore >= 80 ? "비교군 상위권" : shownScore >= 68 ? "무난한 선택" : "꼼꼼히 확인"}</span>
             <span class="badge blue">국산 표시 ${origin.domestic}%</span>
             <span class="badge amber">${product.provisional ? "원재료 확인 중" : `인식된 첨가물 ${product.additives.length}개`}</span>
+          </div>
+          <div class="retailer-links">
+            ${(product.retailers || []).map((retailer) => `<a href="${retailerUrl(product, retailer)}" target="_blank" rel="noopener">${retailer}에서 보기</a>`).join("")}
+            ${product.labelUrl ? `<a href="${product.labelUrl}" target="_blank" rel="noopener">제품 라벨 보기</a>` : ""}
           </div>
         </div>
       </header>

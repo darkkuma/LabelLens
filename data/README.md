@@ -1,24 +1,23 @@
-# Retail Catalog
+# Verified Product Database
 
-`catalog.js` is the browser-ready product catalog used by LabelLens.
+`products.js` is the browser-ready verified product database used by LabelLens.
 
 ## Coverage
 
-- 46 products
-- 8 consumer categories
-- Kurly, Coupang, and Emart retailer signals
+- 14 products
+- 6 consumer categories
+- Kurly label records with Coupang and Emart availability signals
 - Observed on 2026-07-19
 
 ## Selection
 
-- Kurly products use the public Market Kurly search result order for each category keyword.
-- Coupang and Emart products use retailer-attributed public shopping results because their own
-  search pages reject automated requests.
-- A rank is the observed search position, not a claim about unit sales or market share.
+- Every product has a label image, ingredient text, origin entries, serving basis, report number,
+  and calories, sodium, sugar, saturated fat, and protein values.
+- Product names without complete label analysis are excluded.
 - Prices, review text, user identities, and review counts are not stored.
 
-## Analysis Status
+## Collection
 
-Catalog presence and nutrition analysis are separate. A product without a verified label record
-is shown without a score. Nutrition and ingredient fields should only be added after matching an
-MFDS record, a C002 manufacturing report, or a photographed product label.
+Kurly public product-detail label images are collected with `scripts/collect-kurly-labels.mjs` and
+read locally with Apple Vision OCR. OCR output is retained for audit, then values are admitted to
+`products.js` only after the ingredient and nutrition fields are verified against the label image.
