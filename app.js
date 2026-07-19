@@ -4,91 +4,81 @@ const additives = {
   "향미증진제": {
     name: "향미증진제",
     english: "Flavor enhancer",
-    purpose: "Boosts savory taste so processed foods taste fuller and more consistent.",
-    indication:
-      "Commonly permitted when used within food regulations. People who notice sensitivity to specific flavor enhancers may prefer lower-use products.",
-    evidence: "Moderate",
+    purpose: "감칠맛을 높여 제품의 맛을 일정하게 유지합니다.",
+    indication: "허용 기준 안에서 사용할 수 있는 첨가물입니다. 특정 향미증진제에 민감하다면 정확한 성분명과 섭취량을 함께 확인하세요.",
+    evidence: "근거 보통",
     attention: "medium",
   },
   "L-글루탐산나트륨": {
     name: "L-글루탐산나트륨",
     english: "Monosodium glutamate (MSG)",
-    purpose: "Enhances savory or umami taste in soups, sauces, snacks, and prepared foods.",
-    indication:
-      "Regulators permit MSG for food use. LabelLens treats it as an exposure and preference signal, not automatic evidence that a food is unsafe.",
-    evidence: "Strong",
+    purpose: "국물, 소스, 스낵 등에 감칠맛을 더합니다.",
+    indication: "식품 사용이 허용된 첨가물입니다. 라벨렌즈는 MSG 유무만으로 식품을 유해하다고 판단하지 않으며, 총 나트륨과 섭취 빈도를 함께 봅니다.",
+    evidence: "근거 높음",
     attention: "medium",
   },
   "5'-리보뉴클레오티드이나트륨": {
     name: "5'-리보뉴클레오티드이나트륨",
     english: "Disodium ribonucleotides",
-    purpose: "Strengthens savory flavor, often alongside glutamate-based flavor enhancers.",
-    indication:
-      "Generally used in small permitted amounts. Overall sodium and dietary pattern matter more than the ingredient name alone.",
-    evidence: "Moderate",
+    purpose: "글루탐산계 향미증진제와 함께 감칠맛을 강화합니다.",
+    indication: "일반적으로 허용 범위 내 소량 사용됩니다. 성분명 하나보다 전체 나트륨과 식사 패턴이 더 중요합니다.",
+    evidence: "근거 보통",
     attention: "medium",
   },
   "산도조절제": {
     name: "산도조절제",
     english: "Acidity regulator",
-    purpose: "Controls acidity for taste, texture, color stability, and shelf life.",
-    indication:
-      "Usually a low-concern functional additive. The specific compound matters, so transparent labeling is better than vague grouped terms.",
-    evidence: "Strong",
+    purpose: "맛, 식감, 색과 보존성을 위해 산도를 조절합니다.",
+    indication: "대체로 우려가 낮은 기능성 첨가물입니다. 다만 묶음 명칭보다 구체적인 물질명이 표시된 제품이 더 투명합니다.",
+    evidence: "근거 높음",
     attention: "low",
   },
   "혼합제제": {
     name: "혼합제제",
     english: "Compound additive preparation",
-    purpose: "A blend used to stabilize texture, color, or processing performance.",
-    indication:
-      "Not automatically concerning, but it lowers label clarity because several sub-ingredients may be grouped together.",
-    evidence: "Limited",
+    purpose: "식감, 색 또는 제조 안정성을 위해 여러 성분을 섞은 제제입니다.",
+    indication: "그 자체로 유해하다는 뜻은 아닙니다. 여러 하위 성분이 한 이름으로 묶여 라벨 투명성이 낮아질 수 있습니다.",
+    evidence: "근거 제한적",
     attention: "medium",
   },
   "보존료": {
     name: "보존료",
     english: "Preservative",
-    purpose: "Slows microbial growth and spoilage during storage and distribution.",
-    indication:
-      "Can improve food safety. The health context depends on the exact preservative and exposure level.",
-    evidence: "Strong",
+    purpose: "보관과 유통 중 미생물 증식과 부패를 늦춥니다.",
+    indication: "식품 안전에 도움을 줄 수 있습니다. 건강 맥락은 정확한 보존료 종류와 노출량에 따라 달라집니다.",
+    evidence: "근거 높음",
     attention: "medium",
   },
   "아질산나트륨": {
     name: "아질산나트륨",
     english: "Sodium nitrite",
-    purpose: "Preserves cured meat color and reduces growth of dangerous bacteria.",
-    indication:
-      "Useful for safety in processed meats, but frequent high intake of processed meats is commonly flagged in nutrition guidance.",
-    evidence: "Strong",
+    purpose: "가공육의 색을 유지하고 위험한 세균 증식을 억제합니다.",
+    indication: "가공육 안전에 쓰이지만, 가공육을 자주 많이 먹는 식습관은 여러 영양 지침에서 제한을 권합니다.",
+    evidence: "근거 높음",
     attention: "high",
   },
   "구연산": {
     name: "구연산",
     english: "Citric acid",
-    purpose: "Adds tartness and controls acidity.",
-    indication:
-      "Widely used and generally low concern at permitted levels. May bother people with specific sensitivities.",
-    evidence: "Strong",
+    purpose: "신맛을 내고 산도를 조절합니다.",
+    indication: "널리 사용되며 허용 기준에서는 대체로 우려가 낮습니다. 특정 민감성이 있다면 불편을 느낄 수 있습니다.",
+    evidence: "근거 높음",
     attention: "low",
   },
   "잔탄검": {
     name: "잔탄검",
     english: "Xanthan gum",
-    purpose: "Thickens and stabilizes sauces, fillings, and frozen foods.",
-    indication:
-      "Typically low concern, though large amounts can cause digestive discomfort for some people.",
-    evidence: "Moderate",
+    purpose: "소스, 속재료와 냉동식품의 점도와 안정성을 유지합니다.",
+    indication: "대체로 우려가 낮지만 많은 양은 일부 사람에게 소화 불편을 줄 수 있습니다.",
+    evidence: "근거 보통",
     attention: "low",
   },
   "아스파탐": {
     name: "아스파탐",
     english: "Aspartame",
-    purpose: "Provides sweetness with very few calories.",
-    indication:
-      "Regulators set acceptable daily intake limits. People with PKU must avoid phenylalanine sources.",
-    evidence: "Strong",
+    purpose: "적은 열량으로 단맛을 냅니다.",
+    indication: "규제기관이 일일섭취허용량을 정하고 있습니다. 페닐케톤뇨증 환자는 페닐알라닌 급원을 피해야 합니다.",
+    evidence: "근거 높음",
     attention: "medium",
   },
 };
@@ -97,9 +87,9 @@ const products = [
   {
     id: "bibigo-sachal-mandu",
     name: "비비고 사찰만두",
-    brand: "CJ Bibigo",
-    category: "Frozen dumplings",
-    type: "Plant-forward Korean dumpling",
+    brand: "CJ 비비고",
+    category: "냉동만두",
+    type: "채소 중심 사찰식 만두",
     score: 78,
     rank: 4,
     rankTotal: 37,
@@ -107,26 +97,26 @@ const products = [
     nutrition: { sodium: 760, sugar: 5, saturatedFat: 4, protein: 13, calories: 360 },
     subscores: { nutrition: 22, additives: 15, origin: 14, processing: 12, fit: 15 },
     origins: [
-      { ingredient: "Pork", origin: "Korea", weight: "main" },
-      { ingredient: "Garlic chives", origin: "China", weight: "main" },
-      { ingredient: "Cabbage", origin: "Korea", weight: "main" },
-      { ingredient: "Seasoning blend", origin: "Unknown", weight: "minor" },
+      { ingredient: "돼지고기", origin: "국산", weight: "주원료" },
+      { ingredient: "부추", origin: "중국산", weight: "주원료" },
+      { ingredient: "양배추", origin: "국산", weight: "주원료" },
+      { ingredient: "복합조미식품", origin: "미상", weight: "부원료" },
     ],
     ingredients: ["돼지고기", "부추", "양배추", "두부", "대두단백", "양조간장", "향미증진제", "산도조절제", "혼합제제", "참기름"],
     additives: ["향미증진제", "산도조절제", "혼합제제"],
     notes: [
-      "Main ingredients are relatively clear, but the seasoning blend lowers transparency.",
-      "Sodium is higher than ideal for a frequent meal, but typical for frozen dumplings.",
-      "Contains a factual China-origin signal for garlic chives; this is an origin preference marker, not a safety claim.",
+      "주원료는 비교적 명확하지만 복합조미식품의 세부 구성이 표시되지 않아 투명성이 낮아집니다.",
+      "나트륨은 냉동만두 평균 범위지만 한 끼 식사로 자주 먹기에는 주의가 필요합니다.",
+      "부추에 중국산 표시가 있습니다. 원산지 선호 정보이며 안전성 판단은 아닙니다.",
     ],
-    sources: ["Seed product profile", "Korean public API connector planned: MFDS nutrition DB + C002 ingredient report"],
+    sources: ["라벨렌즈 검증용 제품 프로필", "식약처 식품영양성분DB + 식품안전나라 C002 연동"],
   },
   {
     id: "pulmuone-thin-skin-veggie",
     name: "풀무원 얇은피 채소만두",
-    brand: "Pulmuone",
-    category: "Frozen dumplings",
-    type: "Vegetable dumpling",
+    brand: "풀무원",
+    category: "냉동만두",
+    type: "얇은피 채소만두",
     score: 84,
     rank: 1,
     rankTotal: 37,
@@ -134,21 +124,21 @@ const products = [
     nutrition: { sodium: 610, sugar: 4, saturatedFat: 2, protein: 11, calories: 320 },
     subscores: { nutrition: 25, additives: 17, origin: 16, processing: 12, fit: 14 },
     origins: [
-      { ingredient: "Cabbage", origin: "Korea", weight: "main" },
-      { ingredient: "Tofu", origin: "Korea", weight: "main" },
-      { ingredient: "Seasoning", origin: "Unknown", weight: "minor" },
+      { ingredient: "양배추", origin: "국산", weight: "주원료" },
+      { ingredient: "두부", origin: "국산", weight: "주원료" },
+      { ingredient: "조미료", origin: "미상", weight: "부원료" },
     ],
     ingredients: ["양배추", "두부", "부추", "당면", "양조간장", "구연산"],
     additives: ["구연산"],
-    notes: ["Lower sodium than most dumpling products in this seed category.", "Fewer additives and clearer main ingredient origins."],
-    sources: ["Seed product profile"],
+    notes: ["현재 비교군의 만두 제품보다 나트륨이 낮습니다.", "인식된 첨가물이 적고 주원료 원산지가 비교적 명확합니다."],
+    sources: ["라벨렌즈 검증용 제품 프로필"],
   },
   {
     id: "market-veggie-mandu",
     name: "마켓온 채식 교자",
-    brand: "MarketOn",
-    category: "Frozen dumplings",
-    type: "Vegan dumpling",
+    brand: "마켓온",
+    category: "냉동만두",
+    type: "비건 교자",
     score: 81,
     rank: 2,
     rankTotal: 37,
@@ -156,20 +146,20 @@ const products = [
     nutrition: { sodium: 690, sugar: 6, saturatedFat: 2, protein: 10, calories: 340 },
     subscores: { nutrition: 23, additives: 18, origin: 13, processing: 12, fit: 15 },
     origins: [
-      { ingredient: "Vegetables", origin: "Mixed", weight: "main" },
-      { ingredient: "Soy protein", origin: "Imported", weight: "main" },
+      { ingredient: "채소", origin: "혼합", weight: "주원료" },
+      { ingredient: "대두단백", origin: "수입산", weight: "주원료" },
     ],
     ingredients: ["양배추", "대두단백", "표고버섯", "당면", "잔탄검"],
     additives: ["잔탄검"],
-    notes: ["Good additive profile, but mixed/imported origin labels reduce clarity."],
-    sources: ["Seed product profile"],
+    notes: ["첨가물 구성은 단순하지만 혼합·수입산 표기로 원산지 명확성이 낮습니다."],
+    sources: ["라벨렌즈 검증용 제품 프로필"],
   },
   {
     id: "classic-pork-mandu",
     name: "고향손 왕교자",
-    brand: "Gohyang",
-    category: "Frozen dumplings",
-    type: "Pork dumpling",
+    brand: "고향손",
+    category: "냉동만두",
+    type: "돼지고기 왕교자",
     score: 72,
     rank: 8,
     rankTotal: 37,
@@ -177,21 +167,21 @@ const products = [
     nutrition: { sodium: 840, sugar: 6, saturatedFat: 5, protein: 14, calories: 390 },
     subscores: { nutrition: 19, additives: 14, origin: 12, processing: 12, fit: 15 },
     origins: [
-      { ingredient: "Pork", origin: "Imported", weight: "main" },
-      { ingredient: "Cabbage", origin: "China", weight: "main" },
-      { ingredient: "Seasoning", origin: "Unknown", weight: "minor" },
+      { ingredient: "돼지고기", origin: "수입산", weight: "주원료" },
+      { ingredient: "양배추", origin: "중국산", weight: "주원료" },
+      { ingredient: "조미료", origin: "미상", weight: "부원료" },
     ],
     ingredients: ["돼지고기", "양배추", "부추", "전분", "향미증진제", "산도조절제", "구연산"],
     additives: ["향미증진제", "산도조절제", "구연산"],
-    notes: ["Higher sodium and lower origin clarity than the category leaders."],
-    sources: ["Seed product profile"],
+    notes: ["비교군 상위 제품보다 나트륨이 높고 원산지 명확성이 낮습니다."],
+    sources: ["라벨렌즈 검증용 제품 프로필"],
   },
   {
     id: "shin-ramyun",
     name: "신라면",
-    brand: "Nongshim",
-    category: "Instant ramen",
-    type: "Spicy instant noodle",
+    brand: "농심",
+    category: "라면",
+    type: "매운맛 유탕면",
     score: 61,
     rank: 12,
     rankTotal: 42,
@@ -199,20 +189,20 @@ const products = [
     nutrition: { sodium: 1790, sugar: 5, saturatedFat: 8, protein: 10, calories: 510 },
     subscores: { nutrition: 12, additives: 13, origin: 13, processing: 9, fit: 14 },
     origins: [
-      { ingredient: "Wheat flour", origin: "Imported", weight: "main" },
-      { ingredient: "Soup base", origin: "Unknown", weight: "main" },
+      { ingredient: "소맥분", origin: "수입산", weight: "주원료" },
+      { ingredient: "분말스프", origin: "미상", weight: "주원료" },
     ],
     ingredients: ["소맥분", "팜유", "정제염", "향미증진제", "산도조절제", "구연산"],
     additives: ["향미증진제", "산도조절제", "구연산"],
-    notes: ["Sodium is the main score limiter. Best treated as an occasional product or split serving."],
-    sources: ["Seed product profile"],
+    notes: ["나트륨이 점수를 가장 크게 낮춥니다. 섭취 빈도를 줄이거나 국물을 남기는 선택이 도움이 됩니다."],
+    sources: ["라벨렌즈 검증용 제품 프로필"],
   },
   {
     id: "low-sodium-ramen",
     name: "저나트륨 현미라면",
     brand: "CleanBowl",
-    category: "Instant ramen",
-    type: "Lower sodium noodle",
+    category: "라면",
+    type: "저나트륨 현미면",
     score: 79,
     rank: 2,
     rankTotal: 42,
@@ -220,13 +210,13 @@ const products = [
     nutrition: { sodium: 980, sugar: 3, saturatedFat: 3, protein: 12, calories: 430 },
     subscores: { nutrition: 24, additives: 16, origin: 14, processing: 11, fit: 14 },
     origins: [
-      { ingredient: "Brown rice", origin: "Korea", weight: "main" },
-      { ingredient: "Wheat", origin: "Imported", weight: "main" },
+      { ingredient: "현미", origin: "국산", weight: "주원료" },
+      { ingredient: "밀", origin: "수입산", weight: "주원료" },
     ],
     ingredients: ["현미", "소맥분", "정제염", "잔탄검", "구연산"],
     additives: ["잔탄검", "구연산"],
-    notes: ["Much lower sodium than typical instant ramen in this seed set."],
-    sources: ["Seed product profile"],
+    notes: ["현재 비교군의 일반 라면보다 나트륨이 크게 낮습니다."],
+    sources: ["라벨렌즈 검증용 제품 프로필"],
   },
 ];
 
@@ -235,11 +225,26 @@ let selectedProduct = products[0];
 let activeTab = "overview";
 let currentResults = products;
 let searchRequestId = 0;
+let currentPreference = "balanced";
 
 function productScoreClass(score) {
   if (score >= 80) return "green";
   if (score >= 68) return "amber";
   return "blue";
+}
+
+function preferenceScore(product) {
+  if (currentPreference === "sodium") {
+    const sodiumBoost = product.nutrition.sodium <= 700 ? 7 : product.nutrition.sodium >= 1400 ? -8 : 0;
+    return Math.max(0, Math.min(100, product.score + sodiumBoost));
+  }
+  if (currentPreference === "origin") return Math.max(0, Math.min(100, product.score + (product.subscores.origin - 12)));
+  if (currentPreference === "additives") return Math.max(0, Math.min(100, product.score + (product.subscores.additives - 14)));
+  return product.score;
+}
+
+function preferenceLabel() {
+  return { balanced: "균형 기준", sodium: "나트륨 우선", origin: "원산지 우선", additives: "첨가물 우선" }[currentPreference];
 }
 
 function searchProducts(query) {
@@ -293,10 +298,10 @@ function normalizeApiProduct(item, index) {
 
   return {
     id: `mfds-${String(idBase).replace(/[^a-zA-Z0-9가-힣_-]/g, "-")}`,
-    name: item.name || "Unnamed MFDS product",
-    brand: item.maker || "Manufacturer not listed",
-    category: item.category || "MFDS packaged food",
-    type: "Live MFDS nutrition record",
+    name: item.name || "제품명 미표시",
+    brand: item.maker || "제조사 미표시",
+    category: item.category || "가공식품",
+    type: "식약처 실시간 영양정보",
     score,
     rank: null,
     rankTotal: null,
@@ -307,16 +312,16 @@ function normalizeApiProduct(item, index) {
     ingredients: [],
     additives: [],
     provisional: true,
-    servingSize: item.servingSize || "Not listed",
+    servingSize: item.servingSize || "표시 없음",
     reportNumber: item.reportNumber || "",
     notes: [
-      `Nutrition values use the MFDS record basis: ${item.servingSize || "basis not listed"}.`,
-      "This provisional score uses verified nutrition fields; additive, processing, and personal-fit sections remain neutral until ingredient data is connected.",
+      `영양성분은 식약처 데이터의 기준량(${item.servingSize || "표시 없음"})을 사용합니다.`,
+      "영양정보만 확인된 임시 점수입니다. 원재료 데이터가 연결되기 전까지 첨가물, 가공도와 개인 적합도는 중립값으로 둡니다.",
     ],
     sources: [
-      "Live MFDS Food Nutrition Component Database record",
-      item.reportNumber ? `Manufacturing report number: ${item.reportNumber}` : "Manufacturing report number not listed",
-      item.updatedAt ? `MFDS record updated: ${item.updatedAt}` : "MFDS update date not listed",
+      "식약처 식품영양성분DB 실시간 조회",
+      item.reportNumber ? `품목제조보고번호: ${item.reportNumber}` : "품목제조보고번호 미표시",
+      item.updatedAt ? `식약처 데이터 갱신일: ${item.updatedAt}` : "갱신일 미표시",
     ],
   };
 }
@@ -370,10 +375,10 @@ async function hydrateIngredients(product) {
     product.ingredientRecord = record;
     product.subscores.additives = Math.max(8, 20 - product.additives.length * 2);
     product.score = Object.values(product.subscores).reduce((sum, value) => sum + value, 0);
-    const source = `Live Food Safety Korea C002 ingredient record${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
+    const source = `식품안전나라 C002 원재료 기록${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
     if (!product.sources.includes(source)) product.sources.unshift(source);
     if (!product.notes.some((note) => note.includes("C002"))) {
-      product.notes.push("Ingredient and additive signals were matched from the Food Safety Korea C002 manufacturing report.");
+      product.notes.push("식품안전나라 C002 품목제조보고서에서 원재료와 첨가물 정보를 대조했습니다.");
     }
     if (selectedProduct.id === product.id) {
       renderResults(currentResults);
@@ -401,9 +406,9 @@ function renderResults(results) {
           <div class="result-top">
             <div>
               <h3>${product.name}</h3>
-              <p>${product.brand} · ${product.category}${product.provisional ? " · Live MFDS" : " · Demo profile"}</p>
+              <p>${product.brand} · ${product.category}${product.provisional ? " · 식약처 데이터" : " · 검증 프로필"}</p>
             </div>
-            <span class="score-pill">${product.score}</span>
+            <span class="score-pill">${preferenceScore(product)}</span>
           </div>
         </button>
       `,
@@ -413,9 +418,9 @@ function renderResults(results) {
 
 function originSummary(product) {
   const total = product.origins.length || 1;
-  const korea = product.origins.filter((item) => item.origin === "Korea").length;
-  const china = product.origins.filter((item) => item.origin === "China").length;
-  const unknown = product.origins.filter((item) => item.origin === "Unknown" || item.origin === "Mixed").length;
+  const korea = product.origins.filter((item) => /(^|[^가-힣])(국내산|국산|대한민국)(?=$|[^가-힣])|Korea/i.test(item.origin)).length;
+  const china = product.origins.filter((item) => /중국산|China/i.test(item.origin)).length;
+  const unknown = product.origins.filter((item) => /미상|혼합|Unknown|Mixed/i.test(item.origin)).length;
   return {
     domestic: Math.round((korea / total) * 100),
     china,
@@ -426,49 +431,50 @@ function originSummary(product) {
 function holisticScoreFormula(product) {
   const s = product.subscores;
   return [
-    ["Nutrition Balance", `${s.nutrition}/30`, "Sodium, sugar, saturated fat, protein, and category-aware nutrition."],
-    ["Additive Load", `${s.additives}/20`, "Number, purpose, and attention level of additives."],
-    ["Origin Transparency", `${s.origin}/20`, "Domestic/imported/China-origin/unknown origin clarity."],
-    ["Processing Level", `${s.processing}/15`, "Whole-food ingredients vs compound seasonings and refined components."],
-    ["Personal Fit", `${s.fit}/15`, "Allergens, diet preferences, and user concerns."],
+    ["영양 균형", s.nutrition, 30, "나트륨·당·포화지방·단백질"],
+    ["첨가물", s.additives, 20, "개수보다 기능과 근거 중심"],
+    ["원산지 투명성", s.origin, 20, "주원료의 원산지 공개 수준"],
+    ["가공도", s.processing, 15, "원형 원료와 복합 원료 비중"],
+    ["개인 적합도", s.fit, 15, "알레르기·식단·관심 기준"],
   ];
 }
 
 function categoryRanking(product) {
   return products
     .filter((candidate) => candidate.category === product.category)
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => preferenceScore(b) - preferenceScore(a));
 }
 
 function renderDetail(product) {
   const origin = originSummary(product);
+  const shownScore = preferenceScore(product);
   const tabs = [
-    ["overview", "Overview"],
-    ["ingredients", "Additives"],
-    ["origin", "Origin"],
-    ["ranking", "Ranking"],
-    ["sources", "Sources"],
+    ["overview", "한눈에 보기"],
+    ["ingredients", "원재료·첨가물"],
+    ["origin", "원산지"],
+    ["ranking", "같은 종류 비교"],
+    ["sources", "출처·한계"],
   ];
 
   document.querySelector("#product-detail").innerHTML = `
     <article>
       <header class="product-header">
-        <div class="score-dial">
-          <div><strong>${product.score}</strong><span>overall</span></div>
+        <div class="score-dial" style="--score: ${shownScore}">
+          <div><strong>${shownScore}</strong><span>${preferenceLabel()}</span></div>
         </div>
         <div class="product-title">
-          <p class="eyebrow">${product.brand} · ${product.category}</p>
+          <p class="section-kicker">${product.brand} · ${product.category}</p>
           <h2>${product.name}</h2>
-          <p>${product.type}. ${product.provisional ? "Provisional score based on MFDS nutrition fields; missing ingredient dimensions are shown as neutral." : `Ranked #${product.rank} of ${product.rankTotal}, better than ${product.betterThan}% of ${product.category.toLowerCase()} in the current demo set.`}</p>
+          <p>${product.type}. ${product.provisional ? "식약처 영양정보를 바탕으로 계산한 임시 점수이며, 확인되지 않은 항목은 중립 처리했어요." : `현재 비교군 ${product.rankTotal}개 중 ${product.rank}위, ${product.category}의 ${product.betterThan}%보다 높은 점수예요.`}</p>
           <div class="badges">
-            <span class="badge ${productScoreClass(product.score)}">${product.score >= 80 ? "Category leader" : product.score >= 68 ? "Clearer than average" : "Watch tradeoffs"}</span>
-            <span class="badge blue">${origin.domestic}% domestic signal</span>
-            <span class="badge amber">${product.provisional ? "Ingredients pending" : `${product.additives.length} additive flags`}</span>
+            <span class="badge ${productScoreClass(shownScore)}">${shownScore >= 80 ? "비교군 상위권" : shownScore >= 68 ? "무난한 선택" : "꼼꼼히 확인"}</span>
+            <span class="badge blue">국산 표시 ${origin.domestic}%</span>
+            <span class="badge amber">${product.provisional ? "원재료 확인 중" : `인식된 첨가물 ${product.additives.length}개`}</span>
           </div>
         </div>
       </header>
 
-      <nav class="detail-tabs" aria-label="Product detail sections">
+      <nav class="detail-tabs" aria-label="제품 상세 정보">
         ${tabs
           .map(([id, label]) => `<button class="tab-button ${activeTab === id ? "active" : ""}" data-tab="${id}">${label}</button>`)
           .join("")}
@@ -494,18 +500,23 @@ function renderOverview(product) {
     <div class="metric-grid">
       ${holisticScoreFormula(product)
         .map(
-          ([title, value, text]) => `
+          ([title, value, total, text]) => `
             <div class="metric-card">
               <span>${title}</span>
-              <strong>${value}</strong>
+              <strong>${value}<small> / ${total}</small></strong>
               <p>${text}</p>
+              <div class="metric-bar"><i style="width:${Math.round((value / total) * 100)}%"></i></div>
             </div>
           `,
         )
         .join("")}
     </div>
-    <div class="callout" style="margin-top: 14px;">
-      <h3>Why this score?</h3>
+    <div class="summary-list">
+      <div class="summary-point"><strong>영양 스냅샷</strong><p>${product.nutrition.calories || "-"}kcal · 나트륨 ${product.nutrition.sodium || "-"}mg · 단백질 ${product.nutrition.protein || "-"}g · 당류 ${product.nutrition.sugar || "-"}g</p></div>
+      <div class="summary-point"><strong>선택 팁</strong><p>${product.nutrition.sodium > 1000 ? "나트륨이 높아요. 국물이나 소스를 덜 먹고 다른 끼니를 싱겁게 구성해 보세요." : "나트륨은 비교군 안에서 무난해요. 총 섭취량과 곁들이는 음식도 함께 확인하세요."}</p></div>
+    </div>
+    <div class="callout">
+      <h3>이 점수에는 이유가 있어요</h3>
       <p>${product.notes.join(" ")}</p>
     </div>
   `;
@@ -513,38 +524,38 @@ function renderOverview(product) {
 
 function renderIngredients(product) {
   if (product.ingredientsStatus === "loading" && product.provisional) {
-    return `<div class="callout"><h3>Checking the manufacturing report...</h3><p>LabelLens is matching this product against the Food Safety Korea C002 ingredient records.</p></div>`;
+    return `<div class="callout"><h3>품목제조보고서를 확인하고 있어요</h3><p>식품안전나라 C002 데이터에서 제품명과 품목제조보고번호를 대조합니다.</p></div>`;
   }
   if (product.ingredientsStatus === "error" && product.provisional) {
-    return `<div class="callout"><h3>Ingredient service unavailable</h3><p>The nutrition record remains available. LabelLens has not inferred any missing ingredients or additive findings.</p></div>`;
+    return `<div class="callout"><h3>원재료 서비스를 잠시 사용할 수 없어요</h3><p>영양정보는 그대로 확인할 수 있습니다. 확인되지 않은 원재료나 첨가물을 임의로 추정하지 않았어요.</p></div>`;
   }
   if (product.provisional && !product.additives.length) {
     const message = product.ingredientsStatus === "loaded"
-      ? "The C002 record was found, but no terms in the current additive knowledge base were detected. This is not an additive-free claim."
-      : "The MFDS nutrition record verifies nutrient values, but no matching C002 ingredient record was found. LabelLens leaves additive findings unknown instead of guessing.";
-    return `<div class="callout"><h3>${product.ingredientsStatus === "loaded" ? "No recognized additive terms" : "Ingredient data unavailable"}</h3><p>${message}</p></div>`;
+      ? "C002 원재료 기록은 찾았지만 현재 지식베이스가 인식하는 첨가물 명칭은 없었습니다. '무첨가'라는 의미는 아닙니다."
+      : "식약처 영양정보는 확인했지만 일치하는 C002 원재료 기록은 찾지 못했습니다. 추정하는 대신 '정보 없음'으로 표시합니다.";
+    return `<div class="callout"><h3>${product.ingredientsStatus === "loaded" ? "인식된 첨가물 명칭 없음" : "원재료 정보 없음"}</h3><p>${message}</p></div>`;
   }
   return `
-    ${product.ingredientsStatus === "loading" ? `<div class="callout" style="margin-bottom: 12px;"><p>Checking this demo profile against the live C002 manufacturing records...</p></div>` : ""}
-    ${product.ingredientsStatus === "error" ? `<div class="callout" style="margin-bottom: 12px;"><p>The live C002 service is unavailable, so the curated demo ingredient profile is shown.</p></div>` : ""}
-    ${product.ingredientsStatus === "loaded" ? `<div class="callout" style="margin-bottom: 12px;"><h3>C002 manufacturing report matched</h3><p>${product.ingredients.slice(0, 24).join(", ")}${product.ingredients.length > 24 ? "..." : ""}</p></div>` : ""}
+    ${product.ingredientsStatus === "loading" ? `<div class="callout"><p>C002 품목제조보고서와 대조 중입니다.</p></div>` : ""}
+    ${product.ingredientsStatus === "error" ? `<div class="callout"><p>C002 서비스가 응답하지 않아 검증용 원재료 프로필을 표시합니다.</p></div>` : ""}
+    ${product.ingredientsStatus === "loaded" ? `<div class="callout"><h3>C002 품목제조보고서 일치</h3><p>${product.ingredients.slice(0, 24).join(", ")}${product.ingredients.length > 24 ? "..." : ""}</p></div>` : ""}
     <div class="ingredient-list">
       ${product.additives
         .map((key) => {
           const item = additives[key] || {
             name: key,
-            english: "Ingredient or additive",
-            purpose: "Purpose needs confirmation from the exact label context.",
-            indication: "No product-level health claim is made without source review.",
-            evidence: "Unknown",
+            english: "원재료 또는 첨가물",
+            purpose: "정확한 라벨 맥락에서 기능을 확인해야 합니다.",
+            indication: "출처를 확인하지 않은 제품 단위 건강 판단은 제공하지 않습니다.",
+            evidence: "근거 미확인",
             attention: "medium",
           };
           return `
             <div class="ingredient-card">
               <div>
                 <h3>${item.name} <span class="badge">${item.english}</span></h3>
-                <p><strong>Purpose:</strong> ${item.purpose}</p>
-                <p><strong>Health context:</strong> ${item.indication}</p>
+                <p><strong>왜 넣나요:</strong> ${item.purpose}</p>
+                <p><strong>어떻게 봐야 하나요:</strong> ${item.indication}</p>
               </div>
               <div class="attention ${item.attention}">
                 ${item.evidence}
@@ -560,23 +571,23 @@ function renderIngredients(product) {
 function renderOrigin(product) {
   const origin = originSummary(product);
   if (product.provisional && !product.origins.length) {
-    return `<div class="callout"><h3>Origin not listed in this record</h3><p>No product-origin field was returned by the MFDS nutrition lookup. LabelLens marks it unknown rather than inferring origin from the manufacturer.</p></div>`;
+    return `<div class="callout"><h3>원산지가 표시되지 않은 데이터예요</h3><p>식약처 영양정보 조회에서 원산지 필드가 반환되지 않았습니다. 제조사 정보로 추정하지 않고 미상으로 둡니다.</p></div>`;
   }
   return `
     <div class="metric-grid">
-      <div class="metric-card"><span>Domestic signal</span><strong>${origin.domestic}%</strong><p>Known Korean-origin ingredients among listed origin records.</p></div>
-      <div class="metric-card"><span>China-origin flags</span><strong>${origin.china}</strong><p>Factual origin markers only, not safety claims.</p></div>
-      <div class="metric-card"><span>Unknown/mixed</span><strong>${origin.unknown}%</strong><p>Grouped, mixed, or missing origin details.</p></div>
-      <div class="metric-card"><span>Main ingredient clarity</span><strong>${product.subscores.origin}/20</strong><p>How clearly the label explains high-impact ingredients.</p></div>
-      <div class="metric-card"><span>Positioning</span><strong>Transparency</strong><p>Not fear. Clearer labels support better choices.</p></div>
+      <div class="metric-card"><span>국산 표시 비율</span><strong>${origin.domestic}%</strong><p>원산지가 표시된 원료 중 국산 표기</p></div>
+      <div class="metric-card"><span>중국산 표시</span><strong>${origin.china}건</strong><p>안전성 판단이 아닌 원산지 사실 정보</p></div>
+      <div class="metric-card"><span>미상·혼합</span><strong>${origin.unknown}%</strong><p>묶음·혼합 또는 세부 원산지 누락</p></div>
+      <div class="metric-card"><span>원산지 명확성</span><strong>${product.subscores.origin}/20</strong><p>주원료가 얼마나 구체적으로 표시됐는지</p></div>
+      <div class="metric-card"><span>해석 원칙</span><strong>투명성</strong><p>특정 국가를 위험도와 연결하지 않아요</p></div>
     </div>
     <div class="leaderboard" style="margin-top: 14px;">
       ${product.origins
         .map(
           (item) => `
             <div class="rank-card">
-              <span class="rank-num">${item.origin.slice(0, 2).toUpperCase()}</span>
-              <div><h3>${item.ingredient}</h3><p>${item.weight} ingredient · origin: ${item.origin}</p></div>
+              <span class="rank-num">${item.origin.slice(0, 2)}</span>
+              <div><h3>${item.ingredient}</h3><p>${item.weight} · 원산지 ${item.origin}</p></div>
             </div>
           `,
         )
@@ -587,20 +598,20 @@ function renderOrigin(product) {
 
 function renderRanking(product) {
   if (product.provisional) {
-    return `<div class="callout"><h3>Ranking pending category coverage</h3><p>This is a live MFDS product record. A trustworthy category rank requires enough comparable live records with the same nutrition basis.</p></div>`;
+    return `<div class="callout"><h3>비교 데이터가 더 필요해요</h3><p>실시간 식약처 제품입니다. 신뢰할 수 있는 순위는 같은 기준량과 식품 유형의 제품이 충분히 모인 뒤 제공할게요.</p></div>`;
   }
   return `
     <div class="leaderboard">
       ${categoryRanking(product)
         .map(
           (candidate, index) => `
-            <div class="rank-card">
+            <div class="rank-card ${candidate.id === product.id ? "selected" : ""}">
               <span class="rank-num">#${index + 1}</span>
               <div>
                 <h3>${candidate.name}</h3>
-                <p>${candidate.brand} · sodium ${candidate.nutrition.sodium}mg · additives ${candidate.additives.length}</p>
+                <p>${candidate.brand} · 나트륨 ${candidate.nutrition.sodium}mg · 인식 첨가물 ${candidate.additives.length}개</p>
               </div>
-              <strong>${candidate.score}</strong>
+              <strong>${preferenceScore(candidate)}</strong>
             </div>
           `,
         )
@@ -613,13 +624,13 @@ function renderSources(product) {
   return `
     <div class="source-list">
       <div class="callout">
-        <h3>Evidence model</h3>
-        <p>Ingredient explanations are designed to cite WHO/JECFA, EFSA, FDA, Korean MFDS, and recent review literature. Live nutrition records come from MFDS; ingredient explanations currently use a curated local knowledge base.</p>
+        <h3>근거를 숨기지 않아요</h3>
+        <p>영양정보는 식약처 공공데이터를 사용합니다. 첨가물 설명은 식약처, WHO/JECFA, EFSA, FDA와 검토 논문을 기준으로 정리하며 현재 제품 프로필 일부는 시연용 검증 데이터입니다.</p>
       </div>
-      ${product.sources.map((source) => `<div class="callout"><p>${source}</p></div>`).join("")}
-      <div class="callout">
-        <h3>Public API connector targets</h3>
-        <p>MFDS Food Nutrition DB, Foodsafety Korea C002 ingredient reports, imported food product DB, imported food ingredient DB.</p>
+      ${product.sources.map((source, index) => `<div class="source-item"><strong>출처 ${index + 1}</strong><p>${source}</p></div>`).join("")}
+      <div class="source-item">
+        <strong>점수의 한계</strong>
+        <p>점수는 질병 위험이나 식품 안전을 판정하지 않습니다. 공개된 라벨 정보와 같은 종류 제품 안의 상대적 선택 편의를 위한 지표입니다.</p>
       </div>
     </div>
   `;
@@ -629,16 +640,17 @@ function analyzeLabelText() {
   const text = document.querySelector("#label-input").value;
   const additiveHits = Object.keys(additives).filter((key) => text.includes(key));
   const chinaHits = (text.match(/중국산/g) || []).length;
-  const domesticHits = (text.match(/국산|국내산/g) || []).length;
+  const domesticHits = (text.match(/(?<![가-힣])(?:국내산|국산)/g) || []).length;
   const sodium = text.match(/나트륨\s*(\d+)mg/);
   const protein = text.match(/단백질\s*(\d+)g/);
   const clarity = Math.max(44, Math.min(92, 68 + domesticHits * 5 - chinaHits * 4 - (text.includes("혼합") ? 8 : 0)));
 
   document.querySelector("#label-analysis").innerHTML = `
-    <div class="metric-card"><span>Parsed additives</span><strong>${additiveHits.length}</strong><p>${additiveHits.join(", ") || "No seeded additive terms detected."}</p></div>
-    <div class="metric-card"><span>Origin clarity estimate</span><strong>${clarity}/100</strong><p>${domesticHits} domestic markers, ${chinaHits} China-origin markers, grouped terms checked.</p></div>
-    <div class="metric-card"><span>Nutrition signals</span><strong>${sodium ? sodium[1] + "mg" : "n/a"}</strong><p>Sodium ${sodium ? "detected" : "not detected"} · protein ${protein ? protein[1] + "g" : "not detected"}.</p></div>
-    <div class="callout"><h3>Plain-language summary</h3><p>This label includes ${additiveHits.length} recognized additive terms. The app treats origin markers factually and avoids unsafe claims unless an authoritative source supports the specific ingredient context.</p></div>
+    <div class="metric-card"><span>인식된 첨가물</span><strong>${additiveHits.length}개</strong><p>${additiveHits.join(", ") || "현재 사전에서 인식된 명칭 없음"}</p></div>
+    <div class="metric-card"><span>원산지 명확성</span><strong>${clarity}/100</strong><p>국산 ${domesticHits}건 · 중국산 ${chinaHits}건 · 혼합 표기 확인</p></div>
+    <div class="metric-card"><span>나트륨</span><strong>${sodium ? sodium[1] + "mg" : "미인식"}</strong><p>${sodium ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
+    <div class="metric-card"><span>단백질</span><strong>${protein ? protein[1] + "g" : "미인식"}</strong><p>${protein ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
+    <div class="callout"><h3>쉽게 말하면</h3><p>이 라벨에서 첨가물 명칭 ${additiveHits.length}개를 찾았어요. 원산지는 선호를 위한 사실 정보로만 다루며, 출처 없이 특정 원료를 유해하다고 판단하지 않습니다.</p></div>
   `;
 }
 
@@ -650,7 +662,7 @@ async function runSearch(query) {
   activeTab = "overview";
   renderResults(currentResults);
   renderDetail(selectedProduct);
-  setSearchStatus(API_BASE_URL ? "Checking live MFDS nutrition records..." : "Demo catalog · live connector not configured");
+  setSearchStatus(API_BASE_URL ? "식약처 영양정보를 확인하고 있어요..." : "검증용 제품 데이터로 분석했어요");
 
   try {
     const liveResults = await fetchPublicProducts(query);
@@ -669,12 +681,12 @@ async function runSearch(query) {
     renderDetail(selectedProduct);
     hydrateIngredients(selectedProduct);
     setSearchStatus(
-      liveResults.length ? `${liveResults.length} live MFDS record${liveResults.length === 1 ? "" : "s"} found` : "No live match · showing demo catalog",
+      liveResults.length ? `식약처에서 일치하는 제품 ${liveResults.length}개를 찾았어요` : "일치하는 공공데이터가 없어 검증용 제품을 보여드려요",
       liveResults.length ? "live" : "fallback",
     );
   } catch (error) {
     if (requestId !== searchRequestId) return;
-    setSearchStatus("Public API unavailable · showing demo catalog", "fallback");
+    setSearchStatus("공공데이터 연결이 지연되어 검증용 제품을 보여드려요", "fallback");
   }
 }
 
@@ -688,6 +700,20 @@ document.querySelector(".quick-picks").addEventListener("click", (event) => {
   if (!button) return;
   document.querySelector("#search-input").value = button.dataset.query;
   runSearch(button.dataset.query);
+});
+
+document.querySelector("#preference-options").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-preference]");
+  if (!button) return;
+  currentPreference = button.dataset.preference;
+  document.querySelectorAll(".preference-toggle").forEach((item) => {
+    const active = item === button;
+    item.classList.toggle("active", active);
+    item.setAttribute("aria-pressed", String(active));
+  });
+  currentResults.sort((a, b) => preferenceScore(b) - preferenceScore(a));
+  renderResults(currentResults);
+  renderDetail(selectedProduct);
 });
 
 document.querySelector("#results-list").addEventListener("click", (event) => {

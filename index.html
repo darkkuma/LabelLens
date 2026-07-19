@@ -1,54 +1,74 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LabelLens | Korea-first packaged food intelligence</title>
+    <meta name="theme-color" content="#145c43" />
+    <title>라벨렌즈 | 식품 라벨을 선택의 근거로</title>
     <meta
       name="description"
-      content="Decode Korean packaged food labels, additives, origin transparency, and category rankings."
+      content="식약처 공공데이터와 근거 중심 해설로 가공식품의 영양, 첨가물, 원산지를 한눈에 비교합니다."
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <section class="hero" aria-labelledby="page-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Korea-first food label intelligence</p>
-          <h1 id="page-title">Decode packaged foods before they reach your cart.</h1>
-          <p class="hero-text">
-            Search a product or paste a Korean label. LabelLens explains additives,
-            origin clarity, nutrition tradeoffs, and category rank in plain language.
-          </p>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="라벨렌즈 홈">
+        <span class="brand-mark" aria-hidden="true">ㄹ</span>
+        <span>라벨렌즈 <small>LabelLens</small></span>
+      </a>
+      <div class="data-status"><span></span> 식약처 공공데이터 연결</div>
+    </header>
+
+    <main id="top">
+      <section class="search-area" aria-labelledby="page-title">
+        <div class="search-intro">
+          <p class="section-kicker">대한민국 가공식품 인텔리전스</p>
+          <h1 id="page-title">라벨렌즈</h1>
+          <p>어려운 원재료명은 쉽게, 영양과 원산지는 같은 종류끼리 공정하게 비교해요.</p>
         </div>
 
         <form class="search-panel" id="search-form">
-          <label for="search-input">Search product</label>
+          <label for="search-input">어떤 제품이 궁금하세요?</label>
           <div class="search-row">
             <input
               id="search-input"
               name="search"
               value="비비고 사찰만두"
               autocomplete="off"
-              placeholder="비비고 사찰만두, 신라면, 만두..."
+              placeholder="제품명 또는 식품 종류를 입력하세요"
             />
-            <button type="submit">Analyze</button>
+            <button type="submit">분석하기</button>
           </div>
-          <div class="quick-picks" aria-label="Example searches">
+          <div class="quick-picks" aria-label="추천 검색어">
+            <span>추천</span>
             <button type="button" data-query="비비고 사찰만두">비비고 사찰만두</button>
-            <button type="button" data-query="냉동만두">Frozen dumplings</button>
-            <button type="button" data-query="라면">Instant ramen</button>
+            <button type="button" data-query="냉동만두">냉동만두</button>
+            <button type="button" data-query="라면">라면</button>
           </div>
-          <p class="search-status" id="search-status" aria-live="polite">Demo catalog ready</p>
+          <p class="search-status" id="search-status" aria-live="polite">제품 데이터를 준비했어요</p>
         </form>
+      </section>
+
+      <section class="preference-bar" aria-labelledby="preference-title">
+        <div>
+          <span class="section-kicker">내 기준</span>
+          <h2 id="preference-title">무엇을 더 중요하게 볼까요?</h2>
+        </div>
+        <div class="preference-options" id="preference-options">
+          <button type="button" class="preference-toggle active" data-preference="balanced" aria-pressed="true">균형 있게</button>
+          <button type="button" class="preference-toggle" data-preference="sodium" aria-pressed="false">나트륨 적게</button>
+          <button type="button" class="preference-toggle" data-preference="origin" aria-pressed="false">원산지 투명성</button>
+          <button type="button" class="preference-toggle" data-preference="additives" aria-pressed="false">첨가물 단순하게</button>
+        </div>
       </section>
 
       <section class="workspace">
         <aside class="results-panel" aria-labelledby="results-title">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Matched products</p>
-              <h2 id="results-title">Search results</h2>
+              <p class="section-kicker">검색 결과</p>
+              <h2 id="results-title">비교할 제품</h2>
             </div>
             <span id="result-count">0</span>
           </div>
@@ -61,18 +81,29 @@
       </section>
 
       <section class="label-tools" aria-labelledby="label-title">
-        <div class="panel-heading">
+        <div class="label-heading">
           <div>
-            <p class="eyebrow">Fallback when product data is missing</p>
-            <h2 id="label-title">Paste a Korean label</h2>
+            <p class="section-kicker">제품이 검색되지 않나요?</p>
+            <h2 id="label-title">라벨 직접 분석</h2>
+            <p>포장지의 원재료명과 영양정보를 붙여 넣으면 바로 읽어드려요.</p>
           </div>
+          <span class="beta-label">BETA</span>
         </div>
         <div class="label-grid">
-          <textarea id="label-input" spellcheck="false">원재료명: 돼지고기(국산), 부추(중국산), 양배추(국산), 두부, 대두단백, 양조간장, 향미증진제, 산도조절제, 혼합제제, 참기름. 영양정보: 나트륨 760mg, 탄수화물 38g, 당류 5g, 지방 12g, 포화지방 4g, 단백질 13g.</textarea>
+          <div class="input-group">
+            <label for="label-input">원재료명 또는 영양정보</label>
+            <textarea id="label-input" spellcheck="false">원재료명: 돼지고기(국산), 부추(중국산), 양배추(국산), 두부, 대두단백, 양조간장, 향미증진제, 산도조절제, 혼합제제, 참기름. 영양정보: 나트륨 760mg, 탄수화물 38g, 당류 5g, 지방 12g, 포화지방 4g, 단백질 13g.</textarea>
+            <p>입력 내용은 브라우저 안에서만 분석됩니다.</p>
+          </div>
           <div class="label-analysis" id="label-analysis"></div>
         </div>
       </section>
     </main>
+
+    <footer>
+      <strong>라벨렌즈</strong>
+      <p>건강 진단이 아닌 식품 선택 보조 정보입니다. 출처와 데이터 한계를 함께 표시합니다.</p>
+    </footer>
 
     <script src="./config.js"></script>
     <script src="./app.js"></script>

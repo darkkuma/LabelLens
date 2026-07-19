@@ -1,6 +1,7 @@
-# LabelLens
+# 라벨렌즈 LabelLens
 
-LabelLens is a Korea-first packaged food intelligence prototype for OpenAI Build Week.
+라벨렌즈는 한국 소비자를 위한 가공식품 인텔리전스 서비스입니다. 식약처 공공데이터와
+근거 중심 해설을 결합해 영양, 첨가물, 원산지를 같은 종류의 제품끼리 비교합니다.
 
 It helps consumers decode Korean packaged food labels by combining product search,
 category-relative scoring, additive explanations, origin transparency, and label text parsing.
@@ -9,27 +10,27 @@ category-relative scoring, additive explanations, origin transparency, and label
 
 Try LabelLens at [darkkuma.github.io/LabelLens](https://darkkuma.github.io/LabelLens/).
 
-## Demo Flow
+## 핵심 데모
 
-1. Search `비비고 사찰만두`.
-2. Open the matched product profile.
-3. Review the holistic score and category rank.
-4. Inspect additive explanations and health context.
-5. Review domestic/imported/China-origin/unknown origin signals.
-6. Compare against other frozen dumplings.
-7. Paste a Korean label to see fallback parsing.
+1. `비비고 사찰만두`를 검색합니다.
+2. 균형, 저나트륨, 원산지, 첨가물 중 개인 기준을 선택합니다.
+3. 기준에 따라 달라지는 점수와 카테고리 순위를 확인합니다.
+4. 각 첨가물의 기능, 건강 맥락, 근거 수준을 읽습니다.
+5. 국산·중국산·수입산·미상 원산지 표시를 사실 정보로 확인합니다.
+6. 포장지 원재료명과 영양정보를 붙여 넣어 직접 분석합니다.
 
-## Scoring Model
+## 점수 모델
 
-The 100-point holistic score is explainable:
+100점 점수는 다섯 축의 계산 근거를 모두 공개합니다.
 
-- Nutrition Balance: 30 points
-- Additive Load: 20 points
-- Origin Transparency: 20 points
-- Processing Level: 15 points
-- Personal Fit: 15 points
+- 영양 균형 30점
+- 첨가물 20점
+- 원산지 투명성 20점
+- 가공도 15점
+- 개인 적합도 15점
 
-Scores are category-relative so dumplings are compared with dumplings, ramen with ramen, and meal kits with meal kits.
+만두는 만두끼리, 라면은 라면끼리 비교합니다. 개인 기준은 표시 점수와 카테고리 정렬에
+함께 반영됩니다.
 
 ## Public API Plan
 
@@ -57,10 +58,10 @@ dependencies so judges can test it even before public API credentials are connec
 - Testing access: open `index.html` or serve the folder statically.
 - Repository readiness: this folder contains the runnable prototype, README, and API integration plan.
 
-## Health Claim Policy
+## 건강 정보 원칙
 
-LabelLens avoids fear-based claims. It does not say an origin or additive is automatically unsafe.
-It explains purpose, permitted-use context, evidence strength, and sensitive-group considerations.
+특정 원산지나 첨가물을 자동으로 유해하다고 판단하지 않습니다. 기능, 허용 맥락,
+근거 수준과 민감군 주의사항을 설명하며 건강 진단이 아닌 선택 보조 정보를 제공합니다.
 
 ## Running
 
