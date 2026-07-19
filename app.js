@@ -685,5 +685,5 @@ document.querySelector("#product-detail").addEventListener("click", (event) => {
 document.querySelector("#label-input").addEventListener("input", analyzeLabelText);
 
 renderCategoryPicks();
-runSearch("비비고 사찰만두");
+runSearch("");
 analyzeLabelText();
