@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#145c43" />
-    <title>라벨렌즈 | 식품 라벨을 선택의 근거로</title>
+    <title>라벨렌즈 | 식품 라벨을 한눈에</title>
     <meta
       name="description"
-      content="식약처 공공데이터와 근거 중심 해설로 가공식품의 영양, 첨가물, 원산지를 한눈에 비교합니다."
+      content="가공식품의 영양, 첨가물, 원산지를 같은 종류의 제품끼리 한눈에 비교합니다."
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -17,23 +17,17 @@
         <span class="brand-mark" aria-hidden="true">ㄹ</span>
         <span>라벨렌즈 <small>LabelLens</small></span>
       </a>
-      <div class="data-status"><span></span> 식약처 공공데이터 연결</div>
     </header>
 
     <main id="top">
       <section class="search-area" aria-labelledby="page-title">
-        <div class="search-intro">
-          <p class="section-kicker">대한민국 가공식품 인텔리전스</p>
-          <h1 id="page-title">라벨렌즈</h1>
-          <p>어려운 원재료명은 쉽게, 영양과 원산지는 같은 종류끼리 공정하게 비교해요.</p>
-        </div>
-
         <form class="search-panel" id="search-form">
-          <label for="search-input">어떤 제품이 궁금하세요?</label>
+          <h1 id="page-title">어떤 제품이 궁금하세요?</h1>
           <div class="search-row">
             <input
               id="search-input"
               name="search"
+              aria-label="제품명 또는 식품 종류"
               value="비비고 사찰만두"
               autocomplete="off"
               placeholder="제품명 또는 식품 종류를 입력하세요"
@@ -58,7 +52,7 @@
         <div class="preference-options" id="preference-options">
           <button type="button" class="preference-toggle active" data-preference="balanced" aria-pressed="true">균형 있게</button>
           <button type="button" class="preference-toggle" data-preference="sodium" aria-pressed="false">나트륨 적게</button>
-          <button type="button" class="preference-toggle" data-preference="origin" aria-pressed="false">원산지 투명성</button>
+          <button type="button" class="preference-toggle" data-preference="origin" aria-pressed="false">원산지 자세히</button>
           <button type="button" class="preference-toggle" data-preference="additives" aria-pressed="false">첨가물 단순하게</button>
         </div>
       </section>
@@ -100,10 +94,7 @@
       </section>
     </main>
 
-    <footer>
-      <strong>라벨렌즈</strong>
-      <p>건강 진단이 아닌 식품 선택 보조 정보입니다. 출처와 데이터 한계를 함께 표시합니다.</p>
-    </footer>
+    <footer><strong>라벨렌즈</strong></footer>
 
     <script src="./config.js"></script>
     <script src="./app.js"></script>

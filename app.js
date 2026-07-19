@@ -13,7 +13,7 @@ const additives = {
     name: "L-글루탐산나트륨",
     english: "Monosodium glutamate (MSG)",
     purpose: "국물, 소스, 스낵 등에 감칠맛을 더합니다.",
-    indication: "식품 사용이 허용된 첨가물입니다. 라벨렌즈는 MSG 유무만으로 식품을 유해하다고 판단하지 않으며, 총 나트륨과 섭취 빈도를 함께 봅니다.",
+    indication: "식품 사용이 허용된 첨가물입니다. MSG보다 제품의 총 나트륨과 섭취 빈도를 함께 확인하는 것이 좋습니다.",
     evidence: "근거 높음",
     attention: "medium",
   },
@@ -107,7 +107,7 @@ const products = [
     notes: [
       "주원료는 비교적 명확하지만 복합조미식품의 세부 구성이 표시되지 않아 투명성이 낮아집니다.",
       "나트륨은 냉동만두 평균 범위지만 한 끼 식사로 자주 먹기에는 주의가 필요합니다.",
-      "부추에 중국산 표시가 있습니다. 원산지 선호 정보이며 안전성 판단은 아닙니다.",
+      "부추는 중국산으로 표시되어 있습니다.",
     ],
     sources: ["라벨렌즈 검증용 제품 프로필", "식약처 식품영양성분DB + 식품안전나라 C002 연동"],
   },
@@ -316,7 +316,7 @@ function normalizeApiProduct(item, index) {
     reportNumber: item.reportNumber || "",
     notes: [
       `영양성분은 식약처 데이터의 기준량(${item.servingSize || "표시 없음"})을 사용합니다.`,
-      "영양정보만 확인된 임시 점수입니다. 원재료 데이터가 연결되기 전까지 첨가물, 가공도와 개인 적합도는 중립값으로 둡니다.",
+      "원재료·첨가물·원산지 정보는 아직 없습니다.",
     ],
     sources: [
       "식약처 식품영양성분DB 실시간 조회",
@@ -377,9 +377,6 @@ async function hydrateIngredients(product) {
     product.score = Object.values(product.subscores).reduce((sum, value) => sum + value, 0);
     const source = `식품안전나라 C002 원재료 기록${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
     if (!product.sources.includes(source)) product.sources.unshift(source);
-    if (!product.notes.some((note) => note.includes("C002"))) {
-      product.notes.push("식품안전나라 C002 품목제조보고서에서 원재료와 첨가물 정보를 대조했습니다.");
-    }
     if (selectedProduct.id === product.id) {
       renderResults(currentResults);
       renderDetail(product);
@@ -406,7 +403,7 @@ function renderResults(results) {
           <div class="result-top">
             <div>
               <h3>${product.name}</h3>
-              <p>${product.brand} · ${product.category}${product.provisional ? " · 식약처 데이터" : " · 검증 프로필"}</p>
+              <p>${product.brand} · ${product.category}${product.provisional ? " · 영양정보 확인" : ""}</p>
             </div>
             <span class="score-pill">${preferenceScore(product)}</span>
           </div>
@@ -432,8 +429,8 @@ function holisticScoreFormula(product) {
   const s = product.subscores;
   return [
     ["영양 균형", s.nutrition, 30, "나트륨·당·포화지방·단백질"],
-    ["첨가물", s.additives, 20, "개수보다 기능과 근거 중심"],
-    ["원산지 투명성", s.origin, 20, "주원료의 원산지 공개 수준"],
+    ["첨가물", s.additives, 20, "첨가물 수와 주의 성분"],
+    ["원산지 표시", s.origin, 20, "주원료의 원산지 표시 비율"],
     ["가공도", s.processing, 15, "원형 원료와 복합 원료 비중"],
     ["개인 적합도", s.fit, 15, "알레르기·식단·관심 기준"],
   ];
@@ -453,7 +450,6 @@ function renderDetail(product) {
     ["ingredients", "원재료·첨가물"],
     ["origin", "원산지"],
     ["ranking", "같은 종류 비교"],
-    ["sources", "출처·한계"],
   ];
 
   document.querySelector("#product-detail").innerHTML = `
@@ -465,7 +461,7 @@ function renderDetail(product) {
         <div class="product-title">
           <p class="section-kicker">${product.brand} · ${product.category}</p>
           <h2>${product.name}</h2>
-          <p>${product.type}. ${product.provisional ? "식약처 영양정보를 바탕으로 계산한 임시 점수이며, 확인되지 않은 항목은 중립 처리했어요." : `현재 비교군 ${product.rankTotal}개 중 ${product.rank}위, ${product.category}의 ${product.betterThan}%보다 높은 점수예요.`}</p>
+          <p>${product.provisional ? `${product.servingSize} 기준 영양정보` : `${product.category} ${product.rankTotal}개 중 ${product.rank}위 · 상위 ${100 - product.betterThan}%`}</p>
           <div class="badges">
             <span class="badge ${productScoreClass(shownScore)}">${shownScore >= 80 ? "비교군 상위권" : shownScore >= 68 ? "무난한 선택" : "꼼꼼히 확인"}</span>
             <span class="badge blue">국산 표시 ${origin.domestic}%</span>
@@ -491,7 +487,6 @@ function renderTab(product) {
   if (activeTab === "ingredients") return renderIngredients(product);
   if (activeTab === "origin") return renderOrigin(product);
   if (activeTab === "ranking") return renderRanking(product);
-  if (activeTab === "sources") return renderSources(product);
   return renderOverview(product);
 }
 
@@ -516,7 +511,7 @@ function renderOverview(product) {
       <div class="summary-point"><strong>선택 팁</strong><p>${product.nutrition.sodium > 1000 ? "나트륨이 높아요. 국물이나 소스를 덜 먹고 다른 끼니를 싱겁게 구성해 보세요." : "나트륨은 비교군 안에서 무난해요. 총 섭취량과 곁들이는 음식도 함께 확인하세요."}</p></div>
     </div>
     <div class="callout">
-      <h3>이 점수에는 이유가 있어요</h3>
+      <h3>확인할 점</h3>
       <p>${product.notes.join(" ")}</p>
     </div>
   `;
@@ -524,21 +519,19 @@ function renderOverview(product) {
 
 function renderIngredients(product) {
   if (product.ingredientsStatus === "loading" && product.provisional) {
-    return `<div class="callout"><h3>품목제조보고서를 확인하고 있어요</h3><p>식품안전나라 C002 데이터에서 제품명과 품목제조보고번호를 대조합니다.</p></div>`;
+    return `<div class="callout"><h3>원재료를 불러오는 중이에요</h3></div>`;
   }
   if (product.ingredientsStatus === "error" && product.provisional) {
-    return `<div class="callout"><h3>원재료 서비스를 잠시 사용할 수 없어요</h3><p>영양정보는 그대로 확인할 수 있습니다. 확인되지 않은 원재료나 첨가물을 임의로 추정하지 않았어요.</p></div>`;
+    return `<div class="callout"><h3>원재료 정보가 없어요</h3><p>영양정보는 확인할 수 있습니다.</p></div>`;
   }
   if (product.provisional && !product.additives.length) {
     const message = product.ingredientsStatus === "loaded"
-      ? "C002 원재료 기록은 찾았지만 현재 지식베이스가 인식하는 첨가물 명칭은 없었습니다. '무첨가'라는 의미는 아닙니다."
-      : "식약처 영양정보는 확인했지만 일치하는 C002 원재료 기록은 찾지 못했습니다. 추정하는 대신 '정보 없음'으로 표시합니다.";
-    return `<div class="callout"><h3>${product.ingredientsStatus === "loaded" ? "인식된 첨가물 명칭 없음" : "원재료 정보 없음"}</h3><p>${message}</p></div>`;
+      ? "표시된 원재료에서 등록된 첨가물 명칭을 찾지 못했어요."
+      : "이 제품의 원재료 정보는 아직 없어요.";
+    return `<div class="callout"><h3>${product.ingredientsStatus === "loaded" ? "확인된 첨가물 없음" : "원재료 정보 없음"}</h3><p>${message}</p></div>`;
   }
   return `
-    ${product.ingredientsStatus === "loading" ? `<div class="callout"><p>C002 품목제조보고서와 대조 중입니다.</p></div>` : ""}
-    ${product.ingredientsStatus === "error" ? `<div class="callout"><p>C002 서비스가 응답하지 않아 검증용 원재료 프로필을 표시합니다.</p></div>` : ""}
-    ${product.ingredientsStatus === "loaded" ? `<div class="callout"><h3>C002 품목제조보고서 일치</h3><p>${product.ingredients.slice(0, 24).join(", ")}${product.ingredients.length > 24 ? "..." : ""}</p></div>` : ""}
+    ${product.ingredientsStatus === "loaded" ? `<div class="ingredient-summary"><strong>표시 원재료</strong><p>${product.ingredients.slice(0, 24).join(", ")}${product.ingredients.length > 24 ? "..." : ""}</p></div>` : ""}
     <div class="ingredient-list">
       ${product.additives
         .map((key) => {
@@ -546,7 +539,7 @@ function renderIngredients(product) {
             name: key,
             english: "원재료 또는 첨가물",
             purpose: "정확한 라벨 맥락에서 기능을 확인해야 합니다.",
-            indication: "출처를 확인하지 않은 제품 단위 건강 판단은 제공하지 않습니다.",
+            indication: "구체적인 성분명과 함량을 확인하세요.",
             evidence: "근거 미확인",
             attention: "medium",
           };
@@ -571,15 +564,14 @@ function renderIngredients(product) {
 function renderOrigin(product) {
   const origin = originSummary(product);
   if (product.provisional && !product.origins.length) {
-    return `<div class="callout"><h3>원산지가 표시되지 않은 데이터예요</h3><p>식약처 영양정보 조회에서 원산지 필드가 반환되지 않았습니다. 제조사 정보로 추정하지 않고 미상으로 둡니다.</p></div>`;
+    return `<div class="callout"><h3>원산지 정보가 없어요</h3></div>`;
   }
   return `
     <div class="metric-grid">
       <div class="metric-card"><span>국산 표시 비율</span><strong>${origin.domestic}%</strong><p>원산지가 표시된 원료 중 국산 표기</p></div>
-      <div class="metric-card"><span>중국산 표시</span><strong>${origin.china}건</strong><p>안전성 판단이 아닌 원산지 사실 정보</p></div>
+      <div class="metric-card"><span>중국산 표시</span><strong>${origin.china}건</strong><p>중국산으로 표시된 원료</p></div>
       <div class="metric-card"><span>미상·혼합</span><strong>${origin.unknown}%</strong><p>묶음·혼합 또는 세부 원산지 누락</p></div>
       <div class="metric-card"><span>원산지 명확성</span><strong>${product.subscores.origin}/20</strong><p>주원료가 얼마나 구체적으로 표시됐는지</p></div>
-      <div class="metric-card"><span>해석 원칙</span><strong>투명성</strong><p>특정 국가를 위험도와 연결하지 않아요</p></div>
     </div>
     <div class="leaderboard" style="margin-top: 14px;">
       ${product.origins
@@ -598,7 +590,7 @@ function renderOrigin(product) {
 
 function renderRanking(product) {
   if (product.provisional) {
-    return `<div class="callout"><h3>비교 데이터가 더 필요해요</h3><p>실시간 식약처 제품입니다. 신뢰할 수 있는 순위는 같은 기준량과 식품 유형의 제품이 충분히 모인 뒤 제공할게요.</p></div>`;
+    return `<div class="callout"><h3>같은 종류의 비교 제품이 아직 부족해요</h3></div>`;
   }
   return `
     <div class="leaderboard">
@@ -620,22 +612,6 @@ function renderRanking(product) {
   `;
 }
 
-function renderSources(product) {
-  return `
-    <div class="source-list">
-      <div class="callout">
-        <h3>근거를 숨기지 않아요</h3>
-        <p>영양정보는 식약처 공공데이터를 사용합니다. 첨가물 설명은 식약처, WHO/JECFA, EFSA, FDA와 검토 논문을 기준으로 정리하며 현재 제품 프로필 일부는 시연용 검증 데이터입니다.</p>
-      </div>
-      ${product.sources.map((source, index) => `<div class="source-item"><strong>출처 ${index + 1}</strong><p>${source}</p></div>`).join("")}
-      <div class="source-item">
-        <strong>점수의 한계</strong>
-        <p>점수는 질병 위험이나 식품 안전을 판정하지 않습니다. 공개된 라벨 정보와 같은 종류 제품 안의 상대적 선택 편의를 위한 지표입니다.</p>
-      </div>
-    </div>
-  `;
-}
-
 function analyzeLabelText() {
   const text = document.querySelector("#label-input").value;
   const additiveHits = Object.keys(additives).filter((key) => text.includes(key));
@@ -650,7 +626,6 @@ function analyzeLabelText() {
     <div class="metric-card"><span>원산지 명확성</span><strong>${clarity}/100</strong><p>국산 ${domesticHits}건 · 중국산 ${chinaHits}건 · 혼합 표기 확인</p></div>
     <div class="metric-card"><span>나트륨</span><strong>${sodium ? sodium[1] + "mg" : "미인식"}</strong><p>${sodium ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
     <div class="metric-card"><span>단백질</span><strong>${protein ? protein[1] + "g" : "미인식"}</strong><p>${protein ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
-    <div class="callout"><h3>쉽게 말하면</h3><p>이 라벨에서 첨가물 명칭 ${additiveHits.length}개를 찾았어요. 원산지는 선호를 위한 사실 정보로만 다루며, 출처 없이 특정 원료를 유해하다고 판단하지 않습니다.</p></div>
   `;
 }
 
@@ -662,7 +637,7 @@ async function runSearch(query) {
   activeTab = "overview";
   renderResults(currentResults);
   renderDetail(selectedProduct);
-  setSearchStatus(API_BASE_URL ? "식약처 영양정보를 확인하고 있어요..." : "검증용 제품 데이터로 분석했어요");
+  setSearchStatus(API_BASE_URL ? "제품 정보를 찾고 있어요..." : "추천 제품에서 검색했어요");
 
   try {
     const liveResults = await fetchPublicProducts(query);
@@ -681,12 +656,12 @@ async function runSearch(query) {
     renderDetail(selectedProduct);
     hydrateIngredients(selectedProduct);
     setSearchStatus(
-      liveResults.length ? `식약처에서 일치하는 제품 ${liveResults.length}개를 찾았어요` : "일치하는 공공데이터가 없어 검증용 제품을 보여드려요",
+      liveResults.length ? `일치하는 제품 ${liveResults.length}개를 찾았어요` : "검색 결과가 없어 추천 제품을 보여드려요",
       liveResults.length ? "live" : "fallback",
     );
   } catch (error) {
     if (requestId !== searchRequestId) return;
-    setSearchStatus("공공데이터 연결이 지연되어 검증용 제품을 보여드려요", "fallback");
+    setSearchStatus("검색이 지연되어 추천 제품을 보여드려요", "fallback");
   }
 }
 
