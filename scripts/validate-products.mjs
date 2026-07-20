@@ -24,6 +24,7 @@ for (const product of products) {
   for (const field of requiredNutritionFields) {
     if (!Number.isFinite(product.nutrition?.[field]) || product.nutrition[field] < 0) errors.push(`${product.id}: invalid nutrition.${field}`);
   }
+  if (!Number.isFinite(product.nutritionBasisGrams) || product.nutritionBasisGrams <= 0) errors.push(`${product.id}: invalid nutritionBasisGrams`);
   if (!Array.isArray(product.origins) || !product.origins.length) errors.push(`${product.id}: missing origins`);
   if (!Array.isArray(product.retailers) || !product.retailers.length) errors.push(`${product.id}: missing retailers`);
   if (!Array.isArray(product.sources) || product.sources.some((source) => !source)) errors.push(`${product.id}: invalid sources`);

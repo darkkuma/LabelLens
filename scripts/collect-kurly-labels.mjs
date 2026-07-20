@@ -1,12 +1,12 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
-await import("../data/catalog.js");
-
-const catalog = globalThis.LABELLENS_CATALOG.filter((product) => product.retailerId);
-const outputDirectory = process.argv[2] || "/tmp/labellens-labels";
-const ocrBinary = process.argv[3] || "/tmp/labellens-ocr";
+const inputPath = process.argv[2];
+if (!inputPath) throw new Error("usage: node scripts/collect-kurly-labels.mjs <products.json> [output-directory] [ocr-binary]");
+const catalog = JSON.parse(await readFile(inputPath, "utf8")).filter((product) => product.retailerId);
+const outputDirectory = process.argv[3] || "/tmp/labellens-labels";
+const ocrBinary = process.argv[4] || "/tmp/labellens-ocr";
 const resultPath = path.join(outputDirectory, "ocr-results.json");
 
 await mkdir(outputDirectory, { recursive: true });
@@ -26,17 +26,39 @@ function run(command, args) {
   });
 }
 
+async function fetchWithRetry(url, options = {}, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok || response.status < 500) return response;
+      lastError = new Error(`HTTP ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, attempt * 400));
+  }
+  throw lastError;
+}
+
 const results = [];
 for (const [index, product] of catalog.entries()) {
   const detailUrl = `https://api.kurly.com/showroom/v2/products/${product.retailerId}`;
-  const response = await fetch(detailUrl, {
-    headers: {
-      Accept: "application/json",
-      Origin: "https://www.kurly.com",
-      Referer: "https://www.kurly.com/",
-      "X-Kurly-Session-Id": "1",
-    },
-  });
+  let response;
+  try {
+    response = await fetchWithRetry(detailUrl, {
+      headers: {
+        Accept: "application/json",
+        Origin: "https://www.kurly.com",
+        Referer: "https://www.kurly.com/",
+        "X-Kurly-Session-Id": "1",
+      },
+    });
+  } catch (error) {
+    results.push({ product, status: "detail-error", error: error.message });
+    console.error(`[${index + 1}/${catalog.length}] ${product.name}: ${error.message}`);
+    continue;
+  }
 
   if (!response.ok) {
     results.push({ product, status: "detail-error", httpStatus: response.status });
@@ -56,7 +78,7 @@ for (const [index, product] of catalog.entries()) {
   for (const [imageIndex, imageUrl] of imageUrls.entries()) {
     const extension = new URL(imageUrl).pathname.split(".").pop() || "jpg";
     const imagePath = path.join(outputDirectory, `${product.retailerId}-${imageIndex}.${extension}`);
-    const imageResponse = await fetch(imageUrl);
+    const imageResponse = await fetchWithRetry(imageUrl);
     if (!imageResponse.ok) continue;
     await writeFile(imagePath, Buffer.from(await imageResponse.arrayBuffer()));
 

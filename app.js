@@ -112,7 +112,7 @@ function productScoreClass(score) {
 function preferenceScore(product) {
   if (product.catalogOnly) return -1;
   if (currentPreference === "sodium") {
-    const sodiumBoost = product.nutrition.sodium <= 700 ? 7 : product.nutrition.sodium >= 1400 ? -8 : 0;
+    const sodiumBoost = product.nutritionPer100g.sodium <= 300 ? 7 : product.nutritionPer100g.sodium >= 700 ? -8 : 0;
     return Math.max(0, Math.min(100, product.score + sodiumBoost));
   }
   if (currentPreference === "origin") return Math.max(0, Math.min(100, product.score + (product.subscores.origin - 12)));
@@ -164,8 +164,10 @@ function buildVerifiedProduct(record) {
   const ingredients = splitIngredientText(record.ingredientText);
   const recognizedAdditives = Object.keys(additives).filter((key) => record.ingredientText.includes(key));
   const nutrition = { ...record.nutrition };
+  const scale = 100 / record.nutritionBasisGrams;
+  const nutritionPer100g = Object.fromEntries(Object.entries(nutrition).map(([key, value]) => [key, Math.round(value * scale * 10) / 10]));
   const subscores = {
-    nutrition: nutritionSubscore(nutrition),
+    nutrition: nutritionSubscore(nutritionPer100g),
     additives: Math.max(7, 20 - recognizedAdditives.length * 2),
     origin: Math.min(20, 8 + record.origins.length * 3),
     processing: record.category === "두부·콩가공품" || record.category === "즉석밥" ? 14 : record.category === "라면" ? 8 : 10,
@@ -183,6 +185,7 @@ function buildVerifiedProduct(record) {
     ...record,
     score,
     nutrition,
+    nutritionPer100g,
     subscores,
     ingredients,
     additives: recognizedAdditives,
@@ -568,7 +571,7 @@ function renderRanking(product) {
               <span class="rank-num">#${index + 1}</span>
               <div>
                 <h3>${candidate.name}</h3>
-                <p>${candidate.brand} · 나트륨 ${candidate.nutrition.sodium}mg · 인식 첨가물 ${candidate.additives.length}개</p>
+                <p>${candidate.brand} · 100g당 나트륨 ${candidate.nutritionPer100g.sodium}mg · 인식 첨가물 ${candidate.additives.length}개</p>
               </div>
               <strong>${preferenceScore(candidate)}</strong>
             </div>
