@@ -1686,5 +1686,738 @@ globalThis.LABELLENS_PRODUCTS = [
       "품목보고번호: 19990144396481",
       "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250113/gv40001633567_1.jpg"
     ]
+  },
+  {
+    "id": "kurly-5010024",
+    "name": "네니아 우리밀 왕교자",
+    "brand": "네니아",
+    "category": "냉동만두",
+    "type": "냉동만두",
+    "retailerId": "5010024",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "19990461386697",
+    "nutrition": {
+      "calories": 210,
+      "sodium": 280,
+      "sugar": 2,
+      "saturatedFat": 4.1,
+      "protein": 7
+    },
+    "ingredientText": "돼지고기 33.46%(무항생제:국산), 밀가루 23.16%[일(무농약:국산)], 두부(무농약 콩(국산), 응고제(조제해수염화마그 표고버섯(국산), 양배추(국산), 무말랭이(국산), 난백(국산), 유기농 설탕, 천일염(국산), 마늘(국산), 하동청매실간장(대두: 네슘, 올리브유, 식물성유지)], 부추(국산), 양파(국산), 대파(국산), 절임배추(배추:국산), 당연(고구마전분 100%(국산)], 국산), 생강(국산), 참기름(참깨:국산), 청양고추(국산), 후추, 돼지고기, 일, 대두, 계란 함유",
+    "origins": [
+      {
+        "ingredient": "일",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "두부",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "응고제",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "양배추",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "무말랭이",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "난백",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "천일염",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "마늘",
+        "origin": "국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250212/gv30001639744_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 19990461386697",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250212/gv30001639744_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-1000465961",
+    "name": "오뚜기 김치라면 (120GX5)",
+    "brand": "오뚜기",
+    "category": "라면",
+    "type": "라면",
+    "retailerId": "1000465961",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "1986030901885",
+    "nutrition": {
+      "calories": 438,
+      "sodium": 1442,
+      "sugar": 4.17,
+      "saturatedFat": 8.33,
+      "protein": 8.33
+    },
+    "ingredientText": "*면:소맥분(밀:미국산,호주산),변성 • 소비자기본법에 따라 피해 보상 전분,팜유(말레이시아산),감자전분,글루텐, • 부정• 불량식품 신고는 국번없이 1399 정제소금,난각분말,유화유지,마늘시즈닝. • 직사광선을 피해 서늘하고 건조한 곳에 이스트엑기스,야채추출물,면류첨가알칼리 보관 제(산도조절제),비타민B2,녹차풍미유 •벌레나 냄새의 영향을 받기 쉬우므로 *스프류:정제소금(국산),참맛숙성김치분, 보관에 유의 김치양념분, 포도당,설탕,볶음양념분말,조 • 조리시 안전사고에 주의 미육수분말,고춧가루,찌개액젓분말, 쇠고 기육수분말,간장분말,감칠맛베이스,향미 고객상담실 : 080-088-1212 증진제,마늘양념분말,혼합야채분,진한감",
+    "origins": [
+      {
+        "ingredient": "소맥분",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "팜유",
+        "origin": "말레이시아산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "정제소금",
+        "origin": "국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240415/gv40000815763_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 1986030901885",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240415/gv40000815763_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-1000050990",
+    "name": "오뚜기 가뿐한끼 현미밥 150g X 30입",
+    "brand": "오뚜기",
+    "category": "즉석밥",
+    "type": "즉석밥",
+    "retailerId": "1000050990",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "20010445055639",
+    "nutrition": {
+      "calories": 143,
+      "sodium": 3,
+      "sugar": 0,
+      "saturatedFat": 0.4,
+      "protein": 2.67
+    },
+    "ingredientText": "현미50%(배합수제외:국산),쌀(국산),산도조절제 • 소비기한:옆면 표시일까지 • 부정• 불량식품 신고는 국번없이 1399 • 포장재질(내면):용기 및 리드(폴리프로필렌) • 소비자기본법에 따라 피해 보상 • 품목보고번호: 20010445055639• 고객상담실: 080-024-2311(수신자 요금부담) [보관 방법] 1 실온 보관(냉장 및 냉동보관 불필요 2개봉한 제품은 변질의 우려가 있으니 가급적 한번에 드십시오. 3영하 또는 높은 온도에서 보관 시 밥이 마를 수 있으니 주의하세요. 보관 중 온도차로 포장지 내면에 물방울이 맺할 수 있으나 제품에는 이상이 없습니다. (조리법) 1.전자레인지(700W) 이용 시: 점선 부근까지 포장지를 벗긴 후 2분간 데워 드십시오. 2끓는 물 이용시: 조리기구의 뚜껑을 닫지 않고, 가봉하지 않은 용기자 넣어 12분간 조리하세요. ® 주식회사 오뚜기 충북 음성군 대소면 대풍산단로 128 오뚜기 오뮤 가뿐한끼 현미밥 (150g X 30개입)",
+    "origins": [
+      {
+        "ingredient": "쌀",
+        "origin": "국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240802/gv40001539415_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 20010445055639",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240802/gv40001539415_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5069883",
+    "name": "하림 치킨너겟 850g",
+    "brand": "하림",
+    "category": "치킨너겟",
+    "type": "치킨너겟",
+    "retailerId": "5069883",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "199804760029",
+    "nutrition": {
+      "calories": 210,
+      "sodium": 410,
+      "sugar": 0,
+      "saturatedFat": 4.9,
+      "protein": 13
+    },
+    "ingredientText": "닭고기(국내산)74.65 %, 브레더{밀가루(밀: 미국산, 호주산), 전분(옥수수:외국산), 스파이스믹스2호 마늘분말, 백후추분}, 베터믹스에이(밀가루(밀:미국산), 전분(옥수수:외국산)}, 식물성유지, 양파, 곡류가공품, 전 분, 중력분, 정제수, 대두단백, 정제소금, 간장분말 11, 설 탕, 혼합제제(폴리인산나트륨, 피로인산나트륨, 산성피 로인산나트륨), 조미후추분, 치킨용인해서 닭고기, 대두, 밀, 우유, 쇠고기, 달걀 함유",
+    "origins": [
+      {
+        "ingredient": "닭고기",
+        "origin": "국내산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "브레더",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "전분",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "베터믹스에이",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250313/gv10000788275_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 199804760029",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250313/gv10000788275_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5098999",
+    "name": "풀무원 동물복지 치킨 너겟 오리지널",
+    "brand": "풀무원",
+    "category": "치킨너겟",
+    "type": "치킨너겟",
+    "retailerId": "5098999",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "20130476004449",
+    "nutrition": {
+      "calories": 250,
+      "sodium": 730,
+      "sugar": 2,
+      "saturatedFat": 6,
+      "protein": 18
+    },
+    "ingredientText": "동물복지닭고기(국산), 정제수, 피엠배터믹스SRK 프리파우더2R[배터프리믹스에스{밀가루(밀:미국산)}], 변 성전분, 옥수수가루{옥수수(외국산:호주, 브라질, 우크라이나 등)}, 정제소금>, 피엠프리더스트SRK디엠프리파우데[믹스분 말P2{밀가루(밀:미국산, 호주산)}], 밀가루(밀:미국산, 호 주산)>, 카놀라유, 두류가공품, 복합조미식품1, 설탕, 향미증 진제, 복합조미식품2, 염화칼륨, 파슬리후레이크, 흑후추가루 닭고기, 대두, 밀, 계란 함유",
+    "origins": [
+      {
+        "ingredient": "동물복지닭고기",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "배터프리믹스에스",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "옥수수가루",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "밀가루",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240119/gv10000794964_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 20130476004449",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240119/gv10000794964_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-1000779440",
+    "name": "제주담음 제주 흑돼지 마농 짜장 250g",
+    "brand": "제주담음",
+    "category": "카레·짜장",
+    "type": "카레·짜장",
+    "retailerId": "1000779440",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "197202880024484",
+    "nutrition": {
+      "calories": 78,
+      "sodium": 476,
+      "sugar": 2.88,
+      "saturatedFat": 0.6,
+      "protein": 5.2
+    },
+    "ingredientText": "정제수,흑돼지고기(제주산),감자(국산),준장[준장용 [층 내용량당 1일 영양성분 기준치에 대한 비율 된장(소맥분(밀:미국산,호주산), 카라멜색소! 주정,정제소금 나트륨 1,190 mg 60% 국산),복합조미식품],돼지고기민스, 양파,대파, 혼합제제(변 탄수화물 16g 5% 성전분,설탕,덱스트린), 식물성유지,설탕,마늘(제주산),미향, 당류 7.2 g 7% 양파맛분말,L-글루탐산나트륨(향미증진제),정제소금,혼합 지방 9g",
+    "origins": [
+      {
+        "ingredient": "감자",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "분 기준치에 대한 비율 된장",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240827/gv20001551314_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 197202880024484",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240827/gv20001551314_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5101000",
+    "name": "고메 치즈크리스피 핫도그 340g(85gX4개입)",
+    "brand": "고메",
+    "category": "핫도그",
+    "type": "핫도그",
+    "retailerId": "5101000",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "20030435223242",
+    "nutrition": {
+      "calories": 324,
+      "sodium": 541,
+      "sugar": 8.24,
+      "saturatedFat": 4.59,
+      "protein": 8.24
+    },
+    "ingredientText": "고메핫도그믹스[밀가루(밀:호주,미국산), 설탕 칼슘, 글루코노-6-락톤, 전분, L-주석산수소칼륨, 스테아린 변성전분 1, 변성전분2, 팽창제제(탄산수소나트륨, 제일인산 산칼슘), 정제소금(국산)], 켄터키후랑크[돼지고기(국산 : 외국산), 복합조미식품, 유청, 아질산나트륨(발색제)], 66.67 %, 외국산 33.33 %), 물엿, 옥수수전분(옥수수 CJ모짜렐라스트링치즈93[모짜렐라{(외국산)/ 원유 나트륨, 폴리인산칼륨), 구연산삼나트륨], 고메현미감자빵가 식염, 유산균, 우유응고효소}, 변성전분, 혼합제제(폴리인산 콩기름(콩기름, 영양강화제), 난백분, 메이플시럽 루[곡류가공품, 감자가루, 현미가루, 쇼트닝(경화유), 전분], 계란, 우유, 대두, 밀, 돼지고기 함유",
+    "origins": [
+      {
+        "ingredient": "밀가루",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "정제소금",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "돼지고기",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "옥수수전분",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240614/gv00000927495_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-07)",
+      "품목보고번호: 20030435223242",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240614/gv00000927495_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-1000747452",
+    "name": "오뚜기 맛있는 오리지널 핫도그 400g(80gX5개입)",
+    "brand": "오뚜기",
+    "category": "핫도그",
+    "type": "핫도그",
+    "retailerId": "1000747452",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "2012035821875",
+    "nutrition": {
+      "calories": 294,
+      "sodium": 450,
+      "sugar": 10,
+      "saturatedFat": 4.25,
+      "protein": 8.75
+    },
+    "ingredientText": "스모크소시지47.2%[돼지고기91,82%(지방일부 • 쇠고기,닭고기,아황산류,조개류(굴),잣. 총 내용량 400g(80g X 57)] (사용,국산),함수결정포도당,정제소금(국산),L-글루탕산 호두.토마토 혼입가능 1개(30 g 230 kcal 나트륨제제{L-글루탕산나트륨(향미증진제,구아닐산이 • 부정 • 불량식품 신고는 국번없이 1399 • 소비자기본법에 따라 피해 보상 1 가당 • 영성성분 기준치에 대한 비율 (나트륨,이노신산이나트륨),혼합제제(폴리인산나트륨,예 타인산나트륨,미로인산나트륨),파프리카추출색소}곡류 • 소비기한을 꼭 확인 후 사용하십시오. 나트륨 360mg 18% 가공품(밀가루(밀:미국산),설당,옥수수전분(옥수수:외국 • 이미 냉동된 바 있으니, 해동 후 다시 탄수화물 23 g",
+    "origins": [
+      {
+        "ingredient": "정제소금",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "가공품",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240816/gv40001545838_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "식약처 식품영양성분DB (2026-05-14)",
+      "품목보고번호: 2012035821875",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240816/gv40001545838_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5118043",
+    "name": "Kurly's 국산콩 2컵두부 (150g*2컵)",
+    "brand": "Kurly's",
+    "category": "두부·콩가공품",
+    "type": "두부·콩가공품",
+    "retailerId": "5118043",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "1컵 150g",
+    "reportNumber": "2005038930158",
+    "nutrition": {
+      "calories": 135,
+      "sodium": 4.53,
+      "sugar": 1,
+      "saturatedFat": 1.2,
+      "protein": 11
+    },
+    "ingredientText": "대두(국내산) 100%, 혼합제제(조제해수염화마그네슘, 현미유)",
+    "origins": [
+      {
+        "ingredient": "대두",
+        "origin": "국내산",
+        "weight": "100%"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240126/gv10000796778_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 150,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 2005038930158",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240126/gv10000796778_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5113095",
+    "name": "비비고 깻잎고기만두 400gX2개입",
+    "brand": "비비고",
+    "category": "냉동만두",
+    "type": "냉동만두",
+    "retailerId": "5113095",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "총 내용량 400g",
+    "reportNumber": "19870190051-621",
+    "nutrition": {
+      "calories": 735,
+      "sodium": 1370,
+      "sugar": 11,
+      "saturatedFat": 19,
+      "protein": 32
+    },
+    "ingredientText": "돼지고기(국산), 밀가루(밀:호주, 미국산), 양파(국산), 양배추, 깻잎(국산), 대파, 건면(고구마전분,알긴산나트륨,비타민C), 두류가공품, 마늘, 두부, 난백액, 청양고추, 혼합제제(변성전분, 밀글루텐, 말토덱스트린, 밀가루), 양조간장, 곡류가공품, 설탕, 향미증진제, 정제소금, 복합조미식품1, 변성전분, 복합조미식품2, 후춧가루, 콩기름, 생콩분말 밀, 계란, 대두, 돼지고기, 쇠고기, 조개류(굴) 함유",
+    "origins": [
+      {
+        "ingredient": "돼지고기",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "밀가루",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "양파",
+        "origin": "국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "깻잎",
+        "origin": "국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220121/gv00000270593_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 400,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 19870190051-621",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220121/gv00000270593_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5069882",
+    "name": "하림 용가리 치킨 850g",
+    "brand": "하림",
+    "category": "치킨너겟",
+    "type": "치킨너겟",
+    "retailerId": "5069882",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "19980476002-61",
+    "nutrition": {
+      "calories": 280,
+      "sodium": 480,
+      "sugar": 1,
+      "saturatedFat": 7,
+      "protein": 14
+    },
+    "ingredientText": "닭고기(국내산) 56.83 %, 크루스토 브레딩{캐나다산: 영양강화밀가루, 산도조절제, 식물성유지, 설탕, 소금}, 정제수, 프리 더스트에스[밀가루(밀:미국산), 옥수수전분{옥수수(외국산)}], 식물 성유지, 배터믹스, 대두단백, 양파, 곡류가공품, 수용성유청칼슘분말 0.44 %, 혼합분유H, 마늘, 정제소금, 설탕, 혼합제제(폴리인산나트륨 피로인산나트륨, 산성피로인산나트륨), 조미후추분, 파슬리플레이크, 디에이취에이칼슘분말 0.12 %(DHA 5 %, EPA 1.16 %), 치킨용인해서 닭고기, 대두, 밀, 우유, 달걀, 쇠고기 함유",
+    "origins": [
+      {
+        "ingredient": "닭고기",
+        "origin": "국내산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "크루스토 브레딩",
+        "origin": "캐나다산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "밀가루",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "옥수수전분",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231222/gv00000788277_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 19980476002-61",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231222/gv00000788277_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-1000942462",
+    "name": "풀무원 노엣지피자 스위트 포테이토&콘",
+    "brand": "풀무원",
+    "category": "피자",
+    "type": "피자",
+    "retailerId": "1000942462",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "1회 섭취 참고량 150g",
+    "reportNumber": "198504330152537",
+    "nutrition": {
+      "calories": 360,
+      "sodium": 560,
+      "sugar": 1,
+      "saturatedFat": 5,
+      "protein": 16
+    },
+    "ingredientText": "밀가루(밀:미국산,캐나다산),치즈[모짜렐라치즈(미국산, 뉴질랜드산),혼합제제(분말로스, 유산균발효분말) 1기타 본 제품은 공정거래위원회 고시 소비자 분쟁 정제수, 냉동스위트콘(외국산:미국, 태국, 스페인 등), 스위트포테이토소스[설탕, 마요네즈, 서류가공품(중숙고구해결기준에 의거 교환 또는 보상 받을 수 있습니다. 미(중국산)}, 향신료조제품, 기타과당], 대두유, 설탕, 덱스트린, 효모, 정제소금, 맥아분말, 자가분해효모, 효모식품, 1• 부정•불량 식품 신고는 국번 없이 1399 파슬리후레이크 • 고객기쁨센터 080-022- 0085 • 풀부원은고객의 의견을 존중합니다. 우유, 대두, 밀, 달걀 함유",
+    "origins": [
+      {
+        "ingredient": "밀가루",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "모짜렐라치즈",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "냉동스위트콘",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "미",
+        "origin": "중국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241129/gv30001618546_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 150,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 198504330152537",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241129/gv30001618546_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5136105",
+    "name": "고래사 가정용 꼬치어묵",
+    "brand": "고래사",
+    "category": "어묵",
+    "type": "어묵",
+    "retailerId": "5136105",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "19960144406-784",
+    "nutrition": {
+      "calories": 178,
+      "sodium": 1342,
+      "sugar": 8.5,
+      "saturatedFat": 1,
+      "protein": 10.5
+    },
+    "ingredientText": "어묵[연육[외국산(미국, 베트남, 중국 등)/어육살, 설탕, D-소비톨 , 산도조절제}, 전분가공품1{감자전분(폴란드산), 변성전분}, 전분가공품2/타 피오카전분(베트남산), 감자전분(폴란드산)}, 대파, 당근, 정제소금, 대두유, 향미유, L-글루탐산나트륨(향미증진제), 설탕, D-자일로오스(감미료), 글루 코노-6-락톤, 리보뉴클레오티드Nal, 액상소스[정제수, 설탕, 양조간장{탈지 대두(외국산), 천일염(호주산), 소맥, 기타과당, 주정}, 정제소금(국산), 농축 스프베이스{일본산/씨푸드추출물, 가수분해대두단백, 간장, 다시마추출물, 자몽종자추출물] 주정), 가쓰오부시엑기스, 소스, 복합조미식품, 향미증진제, 카라멜색소!. 대두, 밀, 고등어 함유",
+    "origins": [
+      {
+        "ingredient": "양조간장",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "천일염",
+        "origin": "호주산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "정제소금",
+        "origin": "국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250516/gv30001649666_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 19960144406-784",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250516/gv30001649666_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5145473",
+    "name": "삼진어묵 100사각",
+    "brand": "삼진어묵",
+    "category": "어묵",
+    "type": "어묵",
+    "retailerId": "5145473",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "20110144370549",
+    "nutrition": {
+      "calories": 185,
+      "sodium": 826,
+      "sugar": 4,
+      "saturatedFat": 0.3,
+      "protein": 14
+    },
+    "ingredientText": "냉동연육 74.86%(외국산 1일 준 기분 대한 비%은 2,000kcal 기준이므로 /어육살, 설탕, D-소비톨, 산도조절제 밀가루(일:미국, 호주산), 정제소금 (중국산), 대부육, 소스, D-자일로오 스(감미료), L-글루탕산나트륨제제[ L-글루탐산나트륨(향미증진제), 5-2, _(보존료),글루코노델타락톤,복합인 보뉴클레오티드이나트륨], 소브산? @주의사항 산염[폴리인산나트륨, 피로인산나트 3], 포도당, 글리신, 사카린나트륨지 반드시 냉장보관하시고 개봉 후에 른시일 내 섭취하시길 바랍니다 1|[포도당, 사카린나트륨(감미료) 간혹 흑막이 발견될 수 있으나 생선 내 1일, 대두 함유",
+    "origins": [
+      {
+        "ingredient": "산도조절제 밀가루",
+        "origin": "호주산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "정제소금",
+        "origin": "중국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250115/gv10001634258_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 20110144370549",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250115/gv10001634258_1.jpg"
+    ]
+  },
+  {
+    "id": "kurly-5137220",
+    "name": "하림 포켓몬 치즈 너겟",
+    "brand": "하림",
+    "category": "치킨너겟",
+    "type": "치킨너겟",
+    "retailerId": "5137220",
+    "retailers": [
+      "컬리"
+    ],
+    "servingSize": "100g",
+    "reportNumber": "19980476002-1723",
+    "nutrition": {
+      "calories": 230,
+      "sodium": 510,
+      "sugar": 1,
+      "saturatedFat": 4.3,
+      "protein": 15
+    },
+    "ingredientText": "닭고기(국내산) 61.34%, 정제수, 기타가공품1(밀가루(밀: 미국산), 옥수수전분(옥수수: 외국산), 스파이스베이스-2, 미분, 정제소금), 하이멜트치즈(자연치즈(체다치즈: 외국산), 팜유(말레이시아산), 카제인나트륨, 감자전분가공품, 산도조절제), 기타가공품2, 식물성유지, 대두단백, 자연치즈(미국산), 치즈파우더, 정제소금, 혼합제제(폴리인산나트륨, 피로인산나트륨, 산성피로인산나트륨), 설탕, 복합조미식품, 향류가공품",
+    "origins": [
+      {
+        "ingredient": "닭고기",
+        "origin": "국내산",
+        "weight": "61.34%"
+      },
+      {
+        "ingredient": "밀",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "옥수수",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "체다치즈",
+        "origin": "외국산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "팜유",
+        "origin": "말레이시아산",
+        "weight": "표시 원료"
+      },
+      {
+        "ingredient": "자연치즈",
+        "origin": "미국산",
+        "weight": "표시 원료"
+      }
+    ],
+    "labelUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231222/gv40000788278_1.jpg",
+    "observedAt": "2026-07-21",
+    "nutritionBasisGrams": 100,
+    "sources": [
+      "컬리 상품 라벨 이미지 (2026-07-21)",
+      "품목보고번호: 19980476002-1723",
+      "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231222/gv40000788278_1.jpg"
+    ]
   }
 ];

@@ -34,5 +34,20 @@ globalThis.LABELLENS_PRODUCT_IMAGES = {
   "kurly-1000347446": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/602221ca-5488-4af7-a490-c76ceb2f09ab.jpg",
   "kurly-5040516": "https://img-cf.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/shop/data/goods/1565677823762l0.jpg",
   "kurly-5040514": "https://img-cf.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/shop/data/goods/1648205374334l0.jpg",
-  "kurly-1001051157": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/652ecaa7-06ed-46b0-abbc-fe5dc1c92a8f.jpg"
+  "kurly-1001051157": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/652ecaa7-06ed-46b0-abbc-fe5dc1c92a8f.jpg",
+  "kurly-5010024": "https://img-cf.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/shop/data/goods/1510809235913l0.jpg",
+  "kurly-1000465961": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/eaa8ab8c-59c2-4f91-8eba-f03f8c2fe1f0.jpg",
+  "kurly-1000050990": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/5f3991cf-b5d5-4c1c-af4c-428f3a6cf7ae.jpg",
+  "kurly-5069883": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/deb41eee-ba97-4585-a368-d7029127f5d3.jpeg",
+  "kurly-5098999": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/e7a4f936-fcc0-4fd1-8034-c6e6ca97eddd.jpg",
+  "kurly-1000779440": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/d3f3bb09-2889-4474-a65e-15b6ce8a0501.jpg",
+  "kurly-5101000": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/b54e8a60-1d97-43bd-9866-79233cc1b5da.jpg",
+  "kurly-1000747452": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/c4d0fa0d-6971-4310-89e6-f5f5ea0ef73b.jpg",
+  "kurly-5118043": "https://img-cf.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/shop/data/goods/16472487104l0.jpg",
+  "kurly-5113095": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/63ca4178-8d32-4994-a527-9603b1751070.jpg",
+  "kurly-5069882": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/56691907-9b16-488c-830a-9e7a6b5aae5e.jpg",
+  "kurly-1000942462": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/5089cfbc-11b5-40d1-9b83-d851334ca985.jpg",
+  "kurly-5136105": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/b7ce667f-5d58-4f64-9c65-993837800291.jpeg",
+  "kurly-5145473": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/6c3208e9-3536-4cef-808a-06b281be1747.jpeg",
+  "kurly-5137220": "https://product-image.kurly.com/hdims/resize/%5E%3E120x%3E156/cropcenter/120x156/quality/85/src/product/image/e79c6b77-5cb3-42f3-9730-9f97b2ad850f.jpeg"
 };

@@ -75,27 +75,24 @@ function parseRecord(record) {
   const labelUrl = record.labels.find((label) => label.observations)?.imageUrl || "";
   if (!labelUrl) reasons.push("labelUrl");
 
-  if (reasons.length) return { status: "rejected", reasons, product: record.product };
   const brandMatch = record.product.originalName?.match(/^\[([^\]]+)\]/);
-  return {
-    status: "accepted",
-    product: {
-      id: record.product.id,
-      name: cleanName(record.product.originalName || record.product.name),
-      brand: brandMatch?.[1] || cleanName(record.product.name).split(" ")[0],
-      category: record.product.category,
-      type: record.product.category,
-      retailerId: record.product.retailerId,
-      retailers: ["컬리"],
-      servingSize: servingLine,
-      reportNumber,
-      nutrition,
-      ingredientText,
-      origins,
-      labelUrl,
-      observedAt: record.product.observedAt,
-    },
+  const product = {
+    id: record.product.id,
+    name: cleanName(record.product.originalName || record.product.name),
+    brand: brandMatch?.[1] || cleanName(record.product.name).split(" ")[0],
+    category: record.product.category,
+    type: record.product.category,
+    retailerId: record.product.retailerId,
+    retailers: ["컬리"],
+    servingSize: servingLine,
+    reportNumber,
+    nutrition,
+    ingredientText,
+    origins,
+    labelUrl,
+    observedAt: record.product.observedAt,
   };
+  return reasons.length ? { status: "rejected", reasons, product } : { status: "accepted", product };
 }
 
 const parsed = records.map(parseRecord);

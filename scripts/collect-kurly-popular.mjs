@@ -9,6 +9,7 @@ const categories = [
   ["국·탕·찌개", "국 탕 찌개"],
   ["햄·소시지", "햄 소시지"],
   ["냉동 간편식", "냉동 간편식"],
+  ["치킨너겟", "치킨너겟"],
   ["피자", "냉동 피자"],
   ["돈가스", "돈까스"],
   ["떡볶이", "떡볶이"],
@@ -24,13 +25,24 @@ const headers = {
   Accept: "application/json",
   Origin: "https://www.kurly.com",
   Referer: "https://www.kurly.com/",
-  "X-Kurly-Session-Id": "1",
+  "X-Kurly-Session-Id": crypto.randomUUID(),
 };
 const products = new Map();
 
+async function fetchWithRetry(url, attempts = 4) {
+  let response;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    response = await fetch(url, { headers });
+    if (response.ok) return response;
+    if (![403, 429, 500, 502, 503].includes(response.status)) return response;
+    await new Promise((resolve) => setTimeout(resolve, attempt * 1800));
+  }
+  return response;
+}
+
 for (const [category, keyword] of categories) {
   const url = `https://api.kurly.com/search/v4/sites/market/normal-search?keyword=${encodeURIComponent(keyword)}&page=1`;
-  const response = await fetch(url, { headers });
+  const response = await fetchWithRetry(url);
   if (!response.ok) throw new Error(`${keyword}: HTTP ${response.status}`);
   const payload = await response.json();
   const section = payload.data?.listSections?.find((item) => item.view?.sectionCode === "PRODUCT_LIST");
@@ -56,6 +68,7 @@ for (const [category, keyword] of categories) {
     });
   }
   console.error(`${category}: ${items.length}`);
+  await new Promise((resolve) => setTimeout(resolve, 700));
 }
 
 const outputPath = process.argv[2] || "/tmp/labellens-kurly-popular.json";

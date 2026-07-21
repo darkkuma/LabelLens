@@ -37,7 +37,7 @@ const legacyAdditives = {
     name: "혼합제제",
     english: "Compound additive preparation",
     purpose: "식감, 색 또는 제조 안정성을 위해 여러 성분을 섞은 제제입니다.",
-    indication: "그 자체로 유해하다는 뜻은 아닙니다. 여러 하위 성분이 한 이름으로 묶여 라벨 투명성이 낮아질 수 있습니다.",
+    indication: "괄호 안 하위 성분을 각각 확인하세요.",
     evidence: "근거 제한적",
     attention: "medium",
   },

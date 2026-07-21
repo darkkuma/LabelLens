@@ -4,8 +4,8 @@
 
 ## Coverage
 
-- 36 products
-- 14 consumer categories
+- 51 products
+- 15 consumer categories
 - Kurly label records with Coupang and Emart availability signals
 - Observed on 2026-07-19
 
@@ -18,11 +18,15 @@
 
 ## Collection
 
-Kurly public search results are collected across 17 packaged-food categories. Product-detail label
+Kurly public search results are collected across 18 packaged-food categories. Product-detail label
 images are read locally with Apple Vision OCR. OCR output is retained for audit, then values are
 admitted to `products.js` only after the ingredient and nutrition fields are verified against the
 label image. Scores and category rankings normalize label values to 100g while preserving the
 original serving basis for display.
+
+The expansion pipeline collects 18 popular-product searches, extracts label text, joins nutrition
+records by MFDS report number, rejects incomplete or multi-SKU records, and promotes only complete
+records. Chicken nuggets are included as a dedicated ranking category.
 
 ## MFDS Brand Inventory
 
