@@ -23,3 +23,14 @@ images are read locally with Apple Vision OCR. OCR output is retained for audit,
 admitted to `products.js` only after the ingredient and nutrition fields are verified against the
 label image. Scores and category rankings normalize label values to 100g while preserving the
 original serving basis for display.
+
+## MFDS Brand Inventory
+
+`mfds-brand-products.csv` contains 2,132 commercial processed-food records returned by searches for
+13 major brand terms. It includes the product name, manufacturer, categories, nutrition values,
+report number, and update date. It is a keyword inventory rather than the complete MFDS processed-
+food catalog: products whose names omit the searched brand, such as `신라면`, require a separate
+product-name search because the API does not apply the requested manufacturer or DB-group filters.
+
+Regenerate it with `node scripts/export-mfds-products.mjs` after configuring the public-data API key
+in `.env.local`.
