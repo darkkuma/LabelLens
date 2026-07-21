@@ -1,6 +1,6 @@
 const API_BASE_URL = globalThis.LABELLENS_API_BASE_URL || "";
 
-const additives = {
+const legacyAdditives = {
   "향미증진제": {
     name: "향미증진제",
     english: "Flavor enhancer",
@@ -83,6 +83,39 @@ const additives = {
   },
 };
 
+const additiveProfiles = globalThis.LABELLENS_ADDITIVES || Object.entries(legacyAdditives).map(([id, item]) => ({ id, aliases: [id], ...item }));
+const additives = Object.fromEntries(additiveProfiles.map((item) => [item.id, item]));
+const additiveWeights = { regulatory: 5, frequency: 3, specific: 1.5, info: 0.5 };
+const flagOrder = { regulatory: 0, frequency: 1, specific: 2, info: 3 };
+let activeGuideFlag = "all";
+
+function normalizedIngredientText(value) {
+  return String(value || "").toLowerCase().replaceAll(/\s+/g, " ");
+}
+
+function detectAdditives(value) {
+  const text = normalizedIngredientText(value);
+  const matched = additiveProfiles.filter((item) => {
+    if (item.matchAll) {
+      return item.matchAll.every((aliasGroup) => aliasGroup.some((alias) => text.includes(alias.toLowerCase())));
+    }
+    return (item.aliases || []).some((alias) => text.includes(alias.toLowerCase()));
+  });
+  const ids = new Set(matched.map((item) => item.id));
+  if (ids.has("benzoate-vitamin-c")) ids.delete("benzoates");
+  if (ids.has("msg")) ids.delete("flavor-enhancers");
+  return [...ids].sort((a, b) => flagOrder[additives[a].flag] - flagOrder[additives[b].flag]);
+}
+
+function additiveSubscore(additiveIds) {
+  const deduction = additiveIds.reduce((sum, id) => sum + (additiveWeights[additives[id]?.flag] || 1), 0);
+  return Math.max(7, Math.round(20 - deduction));
+}
+
+function additiveNames(additiveIds) {
+  return additiveIds.map((id) => additives[id]?.name || id);
+}
+
 
 const retailerCatalog = globalThis.LABELLENS_PRODUCTS || [];
 const products = retailerCatalog.map(buildVerifiedProduct);
@@ -162,13 +195,13 @@ function nutritionSubscore(nutrition) {
 
 function buildVerifiedProduct(record) {
   const ingredients = splitIngredientText(record.ingredientText);
-  const recognizedAdditives = Object.keys(additives).filter((key) => record.ingredientText.includes(key));
+  const recognizedAdditives = detectAdditives(record.ingredientText);
   const nutrition = { ...record.nutrition };
   const scale = 100 / record.nutritionBasisGrams;
   const nutritionPer100g = Object.fromEntries(Object.entries(nutrition).map(([key, value]) => [key, Math.round(value * scale * 10) / 10]));
   const subscores = {
     nutrition: nutritionSubscore(nutritionPer100g),
-    additives: Math.max(7, 20 - recognizedAdditives.length * 2),
+    additives: additiveSubscore(recognizedAdditives),
     origin: Math.min(20, 8 + record.origins.length * 3),
     processing: record.category === "두부·콩가공품" || record.category === "즉석밥" ? 14 : record.category === "라면" ? 8 : 10,
     fit: 12,
@@ -177,7 +210,7 @@ function buildVerifiedProduct(record) {
   const hasChineseOrigin = record.origins.some((item) => item.origin.includes("중국산"));
   const notes = [
     `${record.servingSize} 기준 나트륨 ${nutrition.sodium}mg, 당류 ${nutrition.sugar}g, 포화지방 ${nutrition.saturatedFat}g입니다.`,
-    recognizedAdditives.length ? `표시 원재료에서 ${recognizedAdditives.join(", ")}을 확인했습니다.` : "등록된 주의 성분 사전과 일치하는 첨가물은 없습니다.",
+    recognizedAdditives.length ? `표시 원재료에서 ${additiveNames(recognizedAdditives).join(", ")}을 확인했습니다.` : "등록된 성분 플래그와 일치하는 항목은 없습니다.",
   ];
   if (hasChineseOrigin) notes.push("중국산으로 표시된 원료가 있습니다.");
 
@@ -281,10 +314,10 @@ async function hydrateIngredients(product) {
     }
     const ingredientText = record.ingredientText || (record.rawMaterials || []).join(", ");
     product.ingredients = splitIngredientText(ingredientText);
-    product.additives = Object.keys(additives).filter((key) => ingredientText.includes(key));
+    product.additives = detectAdditives(ingredientText);
     product.ingredientsStatus = "loaded";
     product.ingredientRecord = record;
-    product.subscores.additives = Math.max(8, 20 - product.additives.length * 2);
+    product.subscores.additives = additiveSubscore(product.additives);
     product.score = Object.values(product.subscores).reduce((sum, value) => sum + value, 0);
     const source = `식품안전나라 C002 원재료 기록${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
     if (!product.sources.includes(source)) product.sources.unshift(source);
@@ -511,16 +544,26 @@ function renderIngredients(product) {
             purpose: "정확한 라벨 맥락에서 기능을 확인해야 합니다.",
             indication: "구체적인 성분명과 함량을 확인하세요.",
             evidence: "근거 미확인",
-            attention: "medium",
+            flag: "info",
+            flagLabel: "정보",
+            forWhom: "구체적인 성분명과 함량을 확인하세요.",
+            sources: [],
           };
           return `
             <div class="ingredient-card">
               <div>
-                <h3>${item.name} <span class="badge">${item.english}</span></h3>
+                <div class="ingredient-title">
+                  <h3>${item.name} <span class="badge">${item.english}</span></h3>
+                  <span class="flag-badge ${item.flag}">${item.flagLabel}</span>
+                </div>
                 <p><strong>왜 넣나요:</strong> ${item.purpose}</p>
-                <p><strong>어떻게 봐야 하나요:</strong> ${item.indication}</p>
+                <p><strong>무엇을 알아야 하나요:</strong> ${item.summary || item.indication}</p>
+                <p><strong>누가 확인하나요:</strong> ${item.forWhom}</p>
+                <div class="evidence-links">
+                  ${(item.sources || []).map((source) => `<a href="${source.url}" target="_blank" rel="noopener">${source.label}</a>`).join("")}
+                </div>
               </div>
-              <div class="attention ${item.attention}">
+              <div class="attention ${item.flag}">
                 ${item.evidence}
               </div>
             </div>
@@ -584,7 +627,8 @@ function renderRanking(product) {
 
 function analyzeLabelText() {
   const text = document.querySelector("#label-input").value;
-  const additiveHits = Object.keys(additives).filter((key) => text.includes(key));
+  const additiveHits = detectAdditives(text);
+  const priorityHits = additiveHits.filter((id) => additives[id].flag !== "info");
   const chinaHits = (text.match(/중국산/g) || []).length;
   const domesticHits = (text.match(/(?<![가-힣])(?:국내산|국산)/g) || []).length;
   const sodium = text.match(/나트륨\s*(\d+)mg/);
@@ -592,11 +636,45 @@ function analyzeLabelText() {
   const clarity = Math.max(44, Math.min(92, 68 + domesticHits * 5 - chinaHits * 4 - (text.includes("혼합") ? 8 : 0)));
 
   document.querySelector("#label-analysis").innerHTML = `
-    <div class="metric-card"><span>인식된 첨가물</span><strong>${additiveHits.length}개</strong><p>${additiveHits.join(", ") || "현재 사전에서 인식된 명칭 없음"}</p></div>
+    <div class="metric-card"><span>확인할 성분</span><strong>${priorityHits.length}개</strong><p>${additiveNames(priorityHits).join(", ") || "추가 주의 플래그 없음"}</p></div>
     <div class="metric-card"><span>원산지 명확성</span><strong>${clarity}/100</strong><p>국산 ${domesticHits}건 · 중국산 ${chinaHits}건 · 혼합 표기 확인</p></div>
     <div class="metric-card"><span>나트륨</span><strong>${sodium ? sodium[1] + "mg" : "미인식"}</strong><p>${sodium ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
     <div class="metric-card"><span>단백질</span><strong>${protein ? protein[1] + "g" : "미인식"}</strong><p>${protein ? "영양정보에서 확인" : "수치를 찾지 못함"}</p></div>
   `;
+}
+
+function renderIngredientGuide() {
+  const filters = [
+    ["all", "전체"],
+    ["regulatory", "규제 확인"],
+    ["frequency", "섭취 빈도"],
+    ["specific", "특정인"],
+    ["info", "정보"],
+  ];
+  document.querySelector("#guide-filters").innerHTML = filters
+    .map(([id, label]) => `<button type="button" class="guide-filter ${activeGuideFlag === id ? "active" : ""}" data-flag="${id}" aria-pressed="${activeGuideFlag === id}">${label}</button>`)
+    .join("");
+
+  const visible = additiveProfiles
+    .filter((item) => activeGuideFlag === "all" || item.flag === activeGuideFlag)
+    .sort((a, b) => flagOrder[a.flag] - flagOrder[b.flag] || a.name.localeCompare(b.name, "ko"));
+  document.querySelector("#ingredient-guide-list").innerHTML = visible
+    .map(
+      (item) => `
+        <article class="guide-item">
+          <div class="guide-item-heading">
+            <div><h3>${item.name}</h3><p>${item.english}</p></div>
+            <span class="flag-badge ${item.flag}">${item.flagLabel}</span>
+          </div>
+          <p>${item.summary}</p>
+          <p class="guide-audience"><strong>확인 대상</strong> ${item.forWhom}</p>
+          <div class="evidence-links">
+            ${item.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noopener">${source.label}</a>`).join("")}
+          </div>
+        </article>
+      `,
+    )
+    .join("");
 }
 
 async function runSearch(query) {
@@ -687,6 +765,14 @@ document.querySelector("#product-detail").addEventListener("click", (event) => {
 
 document.querySelector("#label-input").addEventListener("input", analyzeLabelText);
 
+document.querySelector("#guide-filters").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-flag]");
+  if (!button) return;
+  activeGuideFlag = button.dataset.flag;
+  renderIngredientGuide();
+});
+
 renderCategoryPicks();
+renderIngredientGuide();
 runSearch("");
 analyzeLabelText();
