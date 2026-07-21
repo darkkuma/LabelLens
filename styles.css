@@ -77,6 +77,7 @@ main, footer { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
 
 .workspace { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 16px; }
 .results-panel, .detail-panel, .label-tools, .ingredient-guide { border: 1px solid var(--line); background: var(--panel); }
+.results-panel, .detail-panel { min-width: 0; }
 .results-panel { position: sticky; top: 80px; padding: 18px; }
 .detail-panel { min-height: 620px; padding: 28px; }
 .panel-heading, .label-heading { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
@@ -209,7 +210,7 @@ footer p { margin: 0; }
   .preference-options { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
   .workspace { grid-template-columns: 1fr; }
   .results-panel { position: static; }
-  .results-list { display: flex; overflow-x: auto; padding-bottom: 5px; }
+  .results-list { display: flex; width: 100%; max-width: 100%; overflow-x: auto; padding-bottom: 5px; }
   .result-card { flex: 0 0 250px; }
   .detail-panel, .label-tools { padding: 18px; }
   .ingredient-guide { padding: 18px; }
