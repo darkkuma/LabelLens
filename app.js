@@ -159,6 +159,27 @@ function preferenceLabel() {
   return { balanced: "종합 추천", sodium: "나트륨 우선", origin: "중국산 표시 적게", additives: "주의 성분 적게" }[currentPreference];
 }
 
+function concernCount(product) {
+  return product.additives.filter((id) => additives[id]?.flag !== "info").length;
+}
+
+function compareProducts(a, b) {
+  if (currentPreference === "sodium") {
+    return a.nutritionPer100g.sodium - b.nutritionPer100g.sodium || b.score - a.score;
+  }
+  if (currentPreference === "origin") {
+    const aOrigin = originSummary(a);
+    const bOrigin = originSummary(b);
+    return aOrigin.china - bOrigin.china || aOrigin.unknown - bOrigin.unknown || concernCount(a) - concernCount(b) || b.score - a.score;
+  }
+  if (currentPreference === "additives") {
+    const aWeight = a.additives.reduce((sum, id) => sum + (additiveWeights[additives[id]?.flag] || 0), 0);
+    const bWeight = b.additives.reduce((sum, id) => sum + (additiveWeights[additives[id]?.flag] || 0), 0);
+    return concernCount(a) - concernCount(b) || aWeight - bWeight || originSummary(a).china - originSummary(b).china || b.score - a.score;
+  }
+  return b.score - a.score;
+}
+
 function searchProducts(query) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return products;
@@ -357,7 +378,7 @@ function renderResults(results) {
   list.innerHTML = results
     .map((product, index) => {
       const origin = originSummary(product);
-      const concernCount = product.additives.filter((id) => additives[id]?.flag !== "info").length;
+      const productConcernCount = concernCount(product);
       const rank = index + 1;
       return `
         <button class="result-card ${product.id === selectedProduct.id ? "active" : ""}" data-id="${product.id}">
@@ -367,10 +388,10 @@ function renderResults(results) {
             <p class="result-brand">${product.brand} · ${product.category}</p>
             <h3>${product.name}</h3>
             <div class="result-signals">
-              <span class="signal ${concernCount ? "caution" : "good"}">주의 플래그 ${concernCount}</span>
+              <span class="signal ${productConcernCount ? "caution" : "good"}">주의 플래그 ${productConcernCount}</span>
               <span class="signal ${origin.china ? "caution" : "good"}">중국산 표시 ${origin.china}건</span>
             </div>
-            <p class="result-why">${concernCount === 0 ? "주의 성분 플래그가 적어요" : `${additiveNames(product.additives.filter((id) => additives[id]?.flag !== "info")).slice(0, 2).join(", ")} 확인`}</p>
+            <p class="result-why">${productConcernCount === 0 ? "주의 성분 플래그가 적어요" : `${additiveNames(product.additives.filter((id) => additives[id]?.flag !== "info")).slice(0, 2).join(", ")} 확인`}</p>
           </div>
           <span class="score-pill ${product.catalogOnly ? "pending" : ""}"><strong>${product.catalogOnly ? "--" : preferenceScore(product)}</strong><small>점</small></span>
         </button>
@@ -405,7 +426,7 @@ function holisticScoreFormula(product) {
 function categoryRanking(product) {
   return products
     .filter((candidate) => candidate.category === product.category)
-    .sort((a, b) => preferenceScore(b) - preferenceScore(a));
+    .sort(compareProducts);
 }
 
 function renderDetail(product) {
@@ -704,7 +725,7 @@ function renderIngredientGuide() {
 async function runSearch(query) {
   const requestId = ++searchRequestId;
   const localResults = searchProducts(query);
-  currentResults = [...(localResults.length ? localResults : products)].sort((a, b) => preferenceScore(b) - preferenceScore(a));
+  currentResults = [...(localResults.length ? localResults : products)].sort(compareProducts);
   selectedProduct = currentResults[0];
   activeTab = "overview";
   renderResults(currentResults);
@@ -721,7 +742,7 @@ async function runSearch(query) {
     });
     currentResults = [...localResults, ...liveResults].filter(
       (product, index, list) => list.findIndex((candidate) => candidate.id === product.id) === index,
-    );
+    ).sort(compareProducts);
     if (!currentResults.length) currentResults = products;
     selectedProduct = currentResults[0];
     renderResults(currentResults);
@@ -772,7 +793,7 @@ document.querySelector("#preference-options").addEventListener("click", (event) 
     item.classList.toggle("active", active);
     item.setAttribute("aria-pressed", String(active));
   });
-  currentResults.sort((a, b) => preferenceScore(b) - preferenceScore(a));
+  currentResults.sort(compareProducts);
   renderResults(currentResults);
   renderDetail(selectedProduct);
 });
