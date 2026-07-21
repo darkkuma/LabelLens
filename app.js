@@ -304,7 +304,7 @@ function normalizeApiProduct(item, index) {
 }
 
 async function fetchPublicProducts(query) {
-  if (!API_BASE_URL || query.trim().length < 2) return [];
+  if (!API_BASE_URL || query.trim().length < 2 || categories.includes(query.trim())) return [];
   const response = await fetch(`${API_BASE_URL}/api/nutrition?q=${encodeURIComponent(query.trim())}`);
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(payload.error || "Public data lookup failed");
