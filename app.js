@@ -118,11 +118,16 @@ function additiveNames(additiveIds) {
 
 
 const productImages = globalThis.LABELLENS_PRODUCT_IMAGES || {};
-const retailerCatalog = globalThis.LABELLENS_PRODUCTS || [];
-const products = retailerCatalog.map(buildVerifiedProduct);
+const verifiedRecords = globalThis.LABELLENS_PRODUCTS || [];
+const broadCatalog = globalThis.LABELLENS_CATALOG || { popular: [], mfds: [] };
+const verifiedProducts = verifiedRecords.map(buildVerifiedProduct);
+const popularCatalogProducts = broadCatalog.popular.map(buildCatalogProduct);
+const mfdsCatalogProducts = broadCatalog.mfds.map(buildCatalogProduct);
+const browsingProducts = [...verifiedProducts, ...popularCatalogProducts];
+const products = [...browsingProducts, ...mfdsCatalogProducts];
 
-for (const category of new Set(products.map((product) => product.category))) {
-  const ranked = products.filter((product) => product.category === category).sort((a, b) => b.score - a.score);
+for (const category of new Set(verifiedProducts.map((product) => product.category))) {
+  const ranked = verifiedProducts.filter((product) => product.category === category).sort((a, b) => b.score - a.score);
   ranked.forEach((product, index) => {
     product.rank = index + 1;
     product.rankTotal = ranked.length;
@@ -130,7 +135,7 @@ for (const category of new Set(products.map((product) => product.category))) {
   });
 }
 
-const categories = [...new Set(products.map((product) => product.category))];
+const categories = [...new Set(browsingProducts.map((product) => product.category))];
 let selectedProduct = products[0];
 let activeTab = "overview";
 let currentResults = products;
@@ -145,9 +150,9 @@ function productScoreClass(score) {
 }
 
 function preferenceScore(product) {
-  if (product.catalogOnly) return -1;
   if (currentPreference === "sodium") {
-    const sodiumBoost = product.nutritionPer100g.sodium <= 300 ? 7 : product.nutritionPer100g.sodium >= 700 ? -8 : 0;
+    const sodium = product.nutritionPer100g.sodium;
+    const sodiumBoost = Number.isFinite(sodium) ? (sodium <= 300 ? 7 : sodium >= 700 ? -8 : 0) : 0;
     return Math.max(0, Math.min(100, product.score + sodiumBoost));
   }
   if (currentPreference === "origin") return Math.max(0, Math.min(100, product.score + (product.subscores.origin - 12)));
@@ -165,7 +170,9 @@ function concernCount(product) {
 
 function compareProducts(a, b) {
   if (currentPreference === "sodium") {
-    return a.nutritionPer100g.sodium - b.nutritionPer100g.sodium || b.score - a.score;
+    const aSodium = Number.isFinite(a.nutritionPer100g.sodium) ? a.nutritionPer100g.sodium : Number.POSITIVE_INFINITY;
+    const bSodium = Number.isFinite(b.nutritionPer100g.sodium) ? b.nutritionPer100g.sodium : Number.POSITIVE_INFINITY;
+    return aSodium - bSodium || b.score - a.score || b.dataCoverage - a.dataCoverage;
   }
   if (currentPreference === "origin") {
     const aOrigin = originSummary(a);
@@ -177,18 +184,20 @@ function compareProducts(a, b) {
     const bWeight = b.additives.reduce((sum, id) => sum + (additiveWeights[additives[id]?.flag] || 0), 0);
     return concernCount(a) - concernCount(b) || aWeight - bWeight || originSummary(a).china - originSummary(b).china || b.score - a.score;
   }
-  return b.score - a.score;
+  return b.score - a.score || b.dataCoverage - a.dataCoverage || (a.popularityRank || 999) - (b.popularityRank || 999);
 }
 
 function searchProducts(query) {
   const normalized = query.trim().toLowerCase();
-  if (!normalized) return products;
+  if (!normalized) return browsingProducts;
   return products.filter((product) => {
     const haystack = [
       product.name,
       product.brand,
       product.category,
       product.type,
+      product.maker,
+      product.reportNumber,
       product.ingredients.join(" "),
     ]
       .join(" ")
@@ -225,6 +234,19 @@ function originSubscore(origins) {
   return Math.max(5, Math.min(20, Math.round(12 + domesticRatio * 8 - china * 4 - unknown * 2)));
 }
 
+function scoreAvailableDimensions(subscores) {
+  const maximums = { nutrition: 30, additives: 20, origin: 20, processing: 15, fit: 15 };
+  const available = Object.entries(subscores).filter(([, value]) => Number.isFinite(value));
+  const earned = available.reduce((sum, [, value]) => sum + value, 0);
+  const maximum = available.reduce((sum, [key]) => sum + maximums[key], 0);
+  const dataCoverage = Math.round((maximum / 100) * 100);
+  const rawScore = maximum ? (earned / maximum) * 100 : 50;
+  return {
+    score: Math.round(50 + (rawScore - 50) * (dataCoverage / 100)),
+    dataCoverage,
+  };
+}
+
 function buildVerifiedProduct(record) {
   const ingredients = splitIngredientText(record.ingredientText);
   const recognizedAdditives = detectAdditives(record.ingredientText);
@@ -250,6 +272,7 @@ function buildVerifiedProduct(record) {
     ...record,
     imageUrl: productImages[record.id] || "",
     score,
+    dataCoverage: 100,
     nutrition,
     nutritionPer100g,
     subscores,
@@ -257,6 +280,55 @@ function buildVerifiedProduct(record) {
     additives: recognizedAdditives,
     notes,
     ingredientsStatus: "loaded",
+  };
+}
+
+function buildCatalogProduct(record) {
+  const ingredientText = record.ingredientText || "";
+  const ingredients = splitIngredientText(ingredientText);
+  const origins = Array.isArray(record.origins) ? record.origins : [];
+  const nutrition = Object.fromEntries(
+    Object.entries(record.nutrition || {}).map(([key, value]) => [key, Number.isFinite(value) ? value : null]),
+  );
+  const nutritionValues = [nutrition.calories, nutrition.sodium, nutrition.sugar, nutrition.saturatedFat, nutrition.protein];
+  const hasNutrition = nutritionValues.filter(Number.isFinite).length >= 3 && Number.isFinite(nutrition.sodium);
+  const hasIngredients = ingredientText.length >= 10;
+  const hasOrigins = origins.length > 0;
+  const processing = record.category === "두부·콩가공품" || record.category === "즉석밥" ? 14 : record.category === "라면" ? 8 : 10;
+  const recognizedAdditives = detectAdditives(ingredientText);
+  const subscores = {
+    nutrition: hasNutrition ? nutritionSubscore(nutrition) : null,
+    additives: hasIngredients ? additiveSubscore(recognizedAdditives) : null,
+    origin: hasOrigins ? originSubscore(origins) : null,
+    processing,
+    fit: null,
+  };
+  const { score, dataCoverage } = scoreAvailableDimensions(subscores);
+  const notes = [];
+  if (hasNutrition) notes.push(`나트륨 ${nutrition.sodium}mg, 당류 ${nutrition.sugar ?? "-"}g, 포화지방 ${nutrition.saturatedFat ?? "-"}g입니다.`);
+  if (hasIngredients) notes.push(`표시 원재료에서 ${recognizedAdditives.length ? `${additiveNames(recognizedAdditives).join(", ")}을 확인했습니다.` : "등록된 성분 플래그와 일치하는 항목은 없습니다."}`);
+  if (hasOrigins && origins.some((item) => /중국산|China/i.test(item.origin))) notes.push("중국산으로 표시된 원료가 있습니다.");
+  return {
+    ...record,
+    brand: record.brand || record.maker || "브랜드 미표시",
+    type: record.sourceType === "mfds" ? "식약처 식품영양성분DB" : "인기상품 카탈로그",
+    retailers: record.retailers || [],
+    imageUrl: record.imageUrl || "",
+    score,
+    dataCoverage,
+    nutrition,
+    nutritionPer100g: nutrition,
+    subscores,
+    origins,
+    ingredients,
+    additives: recognizedAdditives,
+    ingredientsStatus: ingredientText ? "loaded" : "missing",
+    catalogOnly: false,
+    provisional: true,
+    notes,
+    sources: record.sourceType === "mfds"
+      ? ["식약처 식품영양성분DB", record.reportNumber ? `품목제조보고번호: ${record.reportNumber}` : ""]
+      : ["컬리 인기상품", record.labelUrl || ""],
   };
 }
 
@@ -268,9 +340,15 @@ function normalizeApiProduct(item, index) {
     sodium: numberValue(item.sodium),
     saturatedFat: numberValue(item.saturatedFat),
   };
-  const nutritionScore = nutritionSubscore(nutrition);
   const originKnown = Boolean(item.origin);
-  const score = nutritionScore + 10 + (originKnown ? 13 : 8) + 8 + 8;
+  const subscores = {
+    nutrition: nutritionSubscore(nutrition),
+    additives: null,
+    origin: originKnown ? 13 : null,
+    processing: 8,
+    fit: null,
+  };
+  const { score, dataCoverage } = scoreAvailableDimensions(subscores);
   const idBase = item.foodCode || item.reportNumber || `${item.name}-${index}`;
 
   return {
@@ -280,15 +358,18 @@ function normalizeApiProduct(item, index) {
     category: item.category || "가공식품",
     type: "식약처 실시간 영양정보",
     score,
+    dataCoverage,
     rank: null,
     rankTotal: null,
     betterThan: null,
     nutrition,
-    subscores: { nutrition: nutritionScore, additives: 10, origin: originKnown ? 13 : 8, processing: 8, fit: 8 },
+    nutritionPer100g: nutrition,
+    subscores,
     origins: item.origin ? [{ ingredient: "Product record", origin: item.origin, weight: "recorded" }] : [],
     ingredients: [],
     additives: [],
     provisional: true,
+    ingredientsStatus: "missing",
     servingSize: item.servingSize || "표시 없음",
     reportNumber: item.reportNumber || "",
     notes: [
@@ -351,7 +432,7 @@ async function hydrateIngredients(product) {
     product.ingredientsStatus = "loaded";
     product.ingredientRecord = record;
     product.subscores.additives = additiveSubscore(product.additives);
-    product.score = Object.values(product.subscores).reduce((sum, value) => sum + value, 0);
+    Object.assign(product, scoreAvailableDimensions(product.subscores));
     const source = `식품안전나라 C002 원재료 기록${record.reportNumber ? ` · ${record.reportNumber}` : ""}`;
     if (!product.sources.includes(source)) product.sources.unshift(source);
     if (selectedProduct.id === product.id) {
@@ -380,6 +461,8 @@ function renderResults(results) {
       const origin = originSummary(product);
       const productConcernCount = concernCount(product);
       const rank = index + 1;
+      const hasIngredientData = product.ingredientsStatus === "loaded";
+      const hasOriginData = product.origins.length > 0;
       return `
         <button class="result-card ${product.id === selectedProduct.id ? "active" : ""}" data-id="${product.id}">
           <span class="result-rank ${rank <= 3 ? "top" : ""}"><strong>${rank}</strong><small>위</small></span>
@@ -388,12 +471,12 @@ function renderResults(results) {
             <p class="result-brand">${product.brand} · ${product.category}</p>
             <h3>${product.name}</h3>
             <div class="result-signals">
-              <span class="signal ${productConcernCount ? "caution" : "good"}">주의 플래그 ${productConcernCount}</span>
-              <span class="signal ${origin.china ? "caution" : "good"}">중국산 표시 ${origin.china}건</span>
+              <span class="signal ${productConcernCount ? "caution" : "good"}">${hasIngredientData ? `주의 플래그 ${productConcernCount}` : "원재료 -"}</span>
+              <span class="signal ${origin.china ? "caution" : "good"}">${hasOriginData ? `중국산 표시 ${origin.china}건` : "원산지 -"}</span>
             </div>
-            <p class="result-why">${productConcernCount === 0 ? "주의 성분 플래그가 적어요" : `${additiveNames(product.additives.filter((id) => additives[id]?.flag !== "info")).slice(0, 2).join(", ")} 확인`}</p>
+            <p class="result-why">${product.provisional ? `데이터 충족률 ${product.dataCoverage}%` : productConcernCount === 0 ? "주의 성분 플래그가 적어요" : `${additiveNames(product.additives.filter((id) => additives[id]?.flag !== "info")).slice(0, 2).join(", ")} 확인`}</p>
           </div>
-          <span class="score-pill ${product.catalogOnly ? "pending" : ""}"><strong>${product.catalogOnly ? "--" : preferenceScore(product)}</strong><small>점</small></span>
+          <span class="score-pill ${product.provisional ? "pending" : ""}"><strong>${preferenceScore(product)}</strong><small>점</small></span>
         </button>
       `;
     })
@@ -453,11 +536,11 @@ function renderDetail(product) {
         <div class="product-title">
           <p class="section-kicker">${product.brand} · ${product.category}</p>
           <h2>${product.name}</h2>
-          <p>${product.provisional ? `${product.servingSize} 기준 영양정보` : `${product.category} ${categoryRanking(product).findIndex((item) => item.id === product.id) + 1}위 · ${preferenceLabel()}`}</p>
+          <p>${product.category} ${categoryRanking(product).findIndex((item) => item.id === product.id) + 1}위 · ${preferenceLabel()}</p>
           <div class="badges">
             <span class="badge ${productScoreClass(shownScore)}">${shownScore >= 80 ? "비교군 상위권" : shownScore >= 68 ? "무난한 선택" : "꼼꼼히 확인"}</span>
             <span class="badge blue">국산 표시 ${origin.domestic}%</span>
-            <span class="badge amber">${product.provisional ? "원재료 확인 중" : `인식된 첨가물 ${product.additives.length}개`}</span>
+            <span class="badge amber">${product.provisional ? `데이터 충족률 ${product.dataCoverage}%` : `인식된 첨가물 ${product.additives.length}개`}</span>
           </div>
           <div class="retailer-links">
             ${(product.retailers || []).map((retailer) => `<a href="${retailerUrl(product, retailer)}" target="_blank" rel="noopener">${retailer}에서 보기</a>`).join("")}
@@ -521,7 +604,7 @@ function renderCatalogDetail(product) {
 }
 
 function renderCategoryPicks() {
-  const counts = retailerCatalog.reduce((result, item) => {
+  const counts = browsingProducts.reduce((result, item) => {
     result[item.category] = (result[item.category] || 0) + 1;
     return result;
   }, {});
@@ -546,9 +629,9 @@ function renderOverview(product) {
           ([title, value, total, text]) => `
             <div class="metric-card">
               <span>${title}</span>
-              <strong>${value}<small> / ${total}</small></strong>
+              <strong>${Number.isFinite(value) ? value : "-"}<small>${Number.isFinite(value) ? ` / ${total}` : ""}</small></strong>
               <p>${text}</p>
-              <div class="metric-bar"><i style="width:${Math.round((value / total) * 100)}%"></i></div>
+              <div class="metric-bar"><i style="width:${Number.isFinite(value) ? Math.round((value / total) * 100) : 0}%"></i></div>
             </div>
           `,
         )
@@ -556,12 +639,12 @@ function renderOverview(product) {
     </div>
     <div class="summary-list">
       <div class="summary-point"><strong>영양 스냅샷</strong><p>${product.nutrition.calories || "-"}kcal · 나트륨 ${product.nutrition.sodium || "-"}mg · 단백질 ${product.nutrition.protein || "-"}g · 당류 ${product.nutrition.sugar || "-"}g</p></div>
-      <div class="summary-point"><strong>선택 팁</strong><p>${product.nutrition.sodium > 1000 ? "나트륨이 높아요. 국물이나 소스를 덜 먹고 다른 끼니를 싱겁게 구성해 보세요." : "나트륨은 비교군 안에서 무난해요. 총 섭취량과 곁들이는 음식도 함께 확인하세요."}</p></div>
+      ${Number.isFinite(product.nutrition.sodium) ? `<div class="summary-point"><strong>선택 팁</strong><p>${product.nutrition.sodium > 1000 ? "나트륨이 높아요. 국물이나 소스를 덜 먹고 다른 끼니를 싱겁게 구성해 보세요." : "나트륨은 비교군 안에서 무난해요. 총 섭취량과 곁들이는 음식도 함께 확인하세요."}</p></div>` : ""}
     </div>
-    <div class="callout">
+    ${product.notes.length ? `<div class="callout">
       <h3>확인할 점</h3>
       <p>${product.notes.join(" ")}</p>
-    </div>
+    </div>` : ""}
   `;
 }
 
@@ -629,7 +712,7 @@ function renderOrigin(product) {
       <div class="metric-card"><span>국산 표시 비율</span><strong>${origin.domestic}%</strong><p>원산지가 표시된 원료 중 국산 표기</p></div>
       <div class="metric-card"><span>중국산 표시</span><strong>${origin.china}건</strong><p>중국산으로 표시된 원료</p></div>
       <div class="metric-card"><span>미상·혼합</span><strong>${origin.unknown}%</strong><p>묶음·혼합 또는 세부 원산지 누락</p></div>
-      <div class="metric-card"><span>원산지 명확성</span><strong>${product.subscores.origin}/20</strong><p>주원료가 얼마나 구체적으로 표시됐는지</p></div>
+      <div class="metric-card"><span>원산지 명확성</span><strong>${Number.isFinite(product.subscores.origin) ? `${product.subscores.origin}/20` : "-"}</strong><p>주원료가 얼마나 구체적으로 표시됐는지</p></div>
     </div>
     <div class="leaderboard" style="margin-top: 14px;">
       ${product.origins
@@ -647,9 +730,6 @@ function renderOrigin(product) {
 }
 
 function renderRanking(product) {
-  if (product.provisional) {
-    return `<div class="callout"><h3>같은 종류의 비교 제품이 아직 부족해요</h3></div>`;
-  }
   return `
     <div class="leaderboard">
       ${categoryRanking(product)
@@ -659,7 +739,7 @@ function renderRanking(product) {
               <span class="rank-num">#${index + 1}</span>
               <div>
                 <h3>${candidate.name}</h3>
-                <p>${candidate.brand} · 100g당 나트륨 ${candidate.nutritionPer100g.sodium}mg · 인식 첨가물 ${candidate.additives.length}개</p>
+                <p>${candidate.brand} · 나트륨 ${Number.isFinite(candidate.nutritionPer100g.sodium) ? `${candidate.nutritionPer100g.sodium}mg` : "-"} · 주의 플래그 ${candidate.ingredientsStatus === "loaded" ? concernCount(candidate) : "-"}</p>
               </div>
               <strong>${preferenceScore(candidate)}</strong>
             </div>

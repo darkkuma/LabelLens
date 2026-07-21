@@ -6,6 +6,9 @@
 
 - 51 products
 - 15 consumer categories
+- 135 additional popular-product records with partial label data
+- 2,125 additional MFDS nutrition records
+- 2,311 locally searchable records in total
 - Kurly label records with Coupang and Emart availability signals
 - Observed on 2026-07-19
 
@@ -13,8 +16,8 @@
 
 - Every product has a label image, ingredient text, origin entries, serving basis, report number,
   and calories, sodium, sugar, saturated fat, and protein values.
-- Product names without complete label analysis are excluded.
-- Prices, review text, user identities, and review counts are not stored.
+- Products without complete label analysis remain in the partial catalog and receive provisional scores.
+- Review text and user identities are not stored.
 
 ## Collection
 
@@ -27,6 +30,11 @@ original serving basis for display.
 The expansion pipeline collects 18 popular-product searches, extracts label text, joins nutrition
 records by MFDS report number, rejects incomplete or multi-SKU records, and promotes only complete
 records. Chicken nuggets are included as a dedicated ranking category.
+
+`catalog.js` retains the remaining popular products and MFDS records even when some label fields are
+missing. Partial products receive a provisional score from the available nutrition, additive,
+origin, and processing dimensions. Scores with lower data coverage are pulled toward 50 so sparse
+records can be ranked without outranking fuller records on a single favorable field.
 
 ## MFDS Brand Inventory
 
