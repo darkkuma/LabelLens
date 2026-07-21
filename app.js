@@ -117,6 +117,7 @@ function additiveNames(additiveIds) {
 }
 
 
+const productImages = globalThis.LABELLENS_PRODUCT_IMAGES || {};
 const retailerCatalog = globalThis.LABELLENS_PRODUCTS || [];
 const products = retailerCatalog.map(buildVerifiedProduct);
 
@@ -135,6 +136,7 @@ let activeTab = "overview";
 let currentResults = products;
 let searchRequestId = 0;
 let currentPreference = "balanced";
+let activeCategory = "냉동만두";
 
 function productScoreClass(score) {
   if (score >= 80) return "green";
@@ -154,7 +156,7 @@ function preferenceScore(product) {
 }
 
 function preferenceLabel() {
-  return { balanced: "균형 기준", sodium: "나트륨 우선", origin: "원산지 우선", additives: "첨가물 우선" }[currentPreference];
+  return { balanced: "종합 추천", sodium: "나트륨 우선", origin: "중국산 표시 적게", additives: "주의 성분 적게" }[currentPreference];
 }
 
 function searchProducts(query) {
@@ -193,6 +195,15 @@ function nutritionSubscore(nutrition) {
   return Math.max(4, Math.min(30, score));
 }
 
+function originSubscore(origins) {
+  if (!origins.length) return 8;
+  const domestic = origins.filter((item) => /국내산|국산|대한민국|Korea/i.test(item.origin)).length;
+  const china = origins.filter((item) => /중국산|China/i.test(item.origin)).length;
+  const unknown = origins.filter((item) => /미상|혼합|Unknown|Mixed/i.test(item.origin)).length;
+  const domesticRatio = domestic / origins.length;
+  return Math.max(5, Math.min(20, Math.round(12 + domesticRatio * 8 - china * 4 - unknown * 2)));
+}
+
 function buildVerifiedProduct(record) {
   const ingredients = splitIngredientText(record.ingredientText);
   const recognizedAdditives = detectAdditives(record.ingredientText);
@@ -202,7 +213,7 @@ function buildVerifiedProduct(record) {
   const subscores = {
     nutrition: nutritionSubscore(nutritionPer100g),
     additives: additiveSubscore(recognizedAdditives),
-    origin: Math.min(20, 8 + record.origins.length * 3),
+    origin: originSubscore(record.origins),
     processing: record.category === "두부·콩가공품" || record.category === "즉석밥" ? 14 : record.category === "라면" ? 8 : 10,
     fit: 12,
   };
@@ -216,6 +227,7 @@ function buildVerifiedProduct(record) {
 
   return {
     ...record,
+    imageUrl: productImages[record.id] || "",
     score,
     nutrition,
     nutritionPer100g,
@@ -339,21 +351,31 @@ function setSearchStatus(message, state = "") {
 
 function renderResults(results) {
   document.querySelector("#result-count").textContent = results.length;
+  const categoryResult = results.length && results.every((product) => product.category === results[0].category);
+  document.querySelector("#results-title").textContent = categoryResult ? `${results[0].category} 랭킹` : "검색 결과 랭킹";
   const list = document.querySelector("#results-list");
   list.innerHTML = results
-    .map(
-      (product) => `
+    .map((product, index) => {
+      const origin = originSummary(product);
+      const concernCount = product.additives.filter((id) => additives[id]?.flag !== "info").length;
+      const rank = index + 1;
+      return `
         <button class="result-card ${product.id === selectedProduct.id ? "active" : ""}" data-id="${product.id}">
-          <div class="result-top">
-            <div>
-              <h3>${product.name}</h3>
-              <p>${product.brand} · ${product.category}${product.catalogOnly ? ` · ${product.retailers.join("·")}` : product.provisional ? " · 영양정보 확인" : ""}</p>
+          <span class="result-rank ${rank <= 3 ? "top" : ""}"><strong>${rank}</strong><small>위</small></span>
+          ${product.imageUrl ? `<img class="result-image" src="${product.imageUrl}" alt="${product.name}" loading="lazy" />` : `<span class="result-image placeholder">${product.category.slice(0, 1)}</span>`}
+          <div class="result-copy">
+            <p class="result-brand">${product.brand} · ${product.category}</p>
+            <h3>${product.name}</h3>
+            <div class="result-signals">
+              <span class="signal ${concernCount ? "caution" : "good"}">주의 플래그 ${concernCount}</span>
+              <span class="signal ${origin.china ? "caution" : "good"}">중국산 표시 ${origin.china}건</span>
             </div>
-            <span class="score-pill ${product.catalogOnly ? "pending" : ""}">${product.catalogOnly ? "--" : preferenceScore(product)}</span>
+            <p class="result-why">${concernCount === 0 ? "주의 성분 플래그가 적어요" : `${additiveNames(product.additives.filter((id) => additives[id]?.flag !== "info")).slice(0, 2).join(", ")} 확인`}</p>
           </div>
+          <span class="score-pill ${product.catalogOnly ? "pending" : ""}"><strong>${product.catalogOnly ? "--" : preferenceScore(product)}</strong><small>점</small></span>
         </button>
-      `,
-    )
+      `;
+    })
     .join("");
 }
 
@@ -403,13 +425,14 @@ function renderDetail(product) {
   document.querySelector("#product-detail").innerHTML = `
     <article>
       <header class="product-header">
-        <div class="score-dial" style="--score: ${shownScore}">
-          <div><strong>${shownScore}</strong><span>${preferenceLabel()}</span></div>
+        <div class="product-image-wrap">
+          ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" />` : `<span>${product.category.slice(0, 1)}</span>`}
+          <div class="product-score"><strong>${shownScore}</strong><small>점</small></div>
         </div>
         <div class="product-title">
           <p class="section-kicker">${product.brand} · ${product.category}</p>
           <h2>${product.name}</h2>
-          <p>${product.provisional ? `${product.servingSize} 기준 영양정보` : `${product.category} ${product.rankTotal}개 중 ${product.rank}위 · 상위 ${100 - product.betterThan}%`}</p>
+          <p>${product.provisional ? `${product.servingSize} 기준 영양정보` : `${product.category} ${categoryRanking(product).findIndex((item) => item.id === product.id) + 1}위 · ${preferenceLabel()}`}</p>
           <div class="badges">
             <span class="badge ${productScoreClass(shownScore)}">${shownScore >= 80 ? "비교군 상위권" : shownScore >= 68 ? "무난한 선택" : "꼼꼼히 확인"}</span>
             <span class="badge blue">국산 표시 ${origin.domestic}%</span>
@@ -482,7 +505,8 @@ function renderCategoryPicks() {
     return result;
   }, {});
   document.querySelector("#category-picks").innerHTML = Object.entries(counts)
-    .map(([category, count]) => `<button type="button" data-category="${category}">${category}<span>${count}</span></button>`)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
+    .map(([category, count]) => `<button type="button" class="${category === activeCategory ? "active" : ""}" data-category="${category}" aria-pressed="${category === activeCategory}">${category}<span>${count}</span></button>`)
     .join("");
 }
 
@@ -680,7 +704,7 @@ function renderIngredientGuide() {
 async function runSearch(query) {
   const requestId = ++searchRequestId;
   const localResults = searchProducts(query);
-  currentResults = localResults.length ? localResults : products;
+  currentResults = [...(localResults.length ? localResults : products)].sort((a, b) => preferenceScore(b) - preferenceScore(a));
   selectedProduct = currentResults[0];
   activeTab = "overview";
   renderResults(currentResults);
@@ -721,15 +745,22 @@ document.querySelector("#search-form").addEventListener("submit", (event) => {
 document.querySelector(".quick-picks").addEventListener("click", (event) => {
   const button = event.target.closest("button[data-query]");
   if (!button) return;
-  document.querySelector("#search-input").value = button.dataset.query;
-  runSearch(button.dataset.query);
+  const query = button.dataset.query;
+  if (categories.includes(query)) {
+    activeCategory = query;
+    renderCategoryPicks();
+  }
+  document.querySelector("#search-input").value = "";
+  runSearch(query);
 });
 
 document.querySelector("#category-picks").addEventListener("click", (event) => {
   const button = event.target.closest("button[data-category]");
   if (!button) return;
-  document.querySelector("#search-input").value = button.dataset.category;
-  runSearch(button.dataset.category);
+  activeCategory = button.dataset.category;
+  document.querySelector("#search-input").value = "";
+  renderCategoryPicks();
+  runSearch(activeCategory);
 });
 
 document.querySelector("#preference-options").addEventListener("click", (event) => {
@@ -774,5 +805,5 @@ document.querySelector("#guide-filters").addEventListener("click", (event) => {
 
 renderCategoryPicks();
 renderIngredientGuide();
-runSearch("");
+runSearch(activeCategory);
 analyzeLabelText();
